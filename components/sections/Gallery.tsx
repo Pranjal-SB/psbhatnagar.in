@@ -3,23 +3,35 @@ import { siteData } from '../../data/site';
 export function Gallery() {
   const { gallery } = siteData;
   return (
-    <div className="max-w-3xl">
-      <h2 className="font-display text-4xl">gallery</h2>
-      <div className="mt-8 flex flex-wrap gap-4">
+    <div>
+      <div className="gallery-glow" aria-hidden>
+        <div className="glow-a" />
+        <div className="glow-b" />
+      </div>
+      <p className="eyebrow">05 — gallery</p>
+      <h2 className="section-h tight">through my lens</h2>
+      <p className="sub-copy">a few frames — film &amp; digital.</p>
+      <div className="frames">
         {gallery.map((g) => (
           <figure
+            className="frame"
             key={g.caption}
-            className="w-40 overflow-hidden rounded-lg"
-            style={{ transform: `rotate(${g.rotate}deg)` }}
+            style={
+              {
+                '--rot': `${g.rotate}deg`,
+                '--from': g.from,
+                '--to': g.to,
+              } as React.CSSProperties
+            }
           >
-            <div
-              className="aspect-[3/4] w-full"
-              style={{ background: `linear-gradient(160deg, ${g.from}, ${g.to})` }}
-            />
-            <figcaption className="mt-2 font-mono text-xs text-muted">{g.caption}</figcaption>
+            <div className="frame-img" />
+            <figcaption>{g.caption}</figcaption>
           </figure>
         ))}
       </div>
+      <a className="link-underline gallery-link" href={siteData.links.instagram} target="_blank" rel="noreferrer">
+        more on instagram&nbsp;↗
+      </a>
     </div>
   );
 }

@@ -3,11 +3,18 @@ import { siteData } from '../../data/site';
 export function About() {
   const { about } = siteData;
   return (
-    <div className="max-w-2xl">
-      <h2 className="font-display text-4xl">about</h2>
-      <p className="mt-6 text-2xl leading-snug">{about.lead}</p>
-      <p className="mt-4 text-muted">{about.body}</p>
-      <p className="mt-8 font-mono text-sm text-muted">{about.tags.join(' ')}</p>
+    <div>
+      <div className="ring" aria-hidden />
+      <div className="orb orb-b about-orb" aria-hidden />
+      <p className="eyebrow">02 — about</p>
+      <p className="about-lead">{about.lead}</p>
+      <div className="rule" />
+      <p className="body-copy">{about.body}</p>
+      <div className="tag-row">
+        {about.tags.map((t) => (
+          <span key={t}>{t}</span>
+        ))}
+      </div>
     </div>
   );
 }

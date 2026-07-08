@@ -1,39 +1,90 @@
-/* Ported from vanilla src/theme/palettes.ts — contrast-tested hex, do not
-   hand-edit values. 4 palettes x light/dark. Token names:
-   --bg --surface --text --muted --faint --accent --soft --shadow */
+/* Ported verbatim from vanilla src/styles/tokens.css. Contrast-tested hex,
+   do not hand-edit color values. Colors resolve purely from CSS attribute
+   selectors (no runtime color JS) so the no-flash restore works on first paint. */
 
-:root[data-palette="indigo"][data-theme="light"] {
-  --bg: #f0f0f5; --surface: #ffffff; --text: #14141b; --muted: #5b5b66;
-  --faint: #dcdce4; --accent: #4a39ff; --soft: #e9e6ff; --shadow: rgba(30,30,60,.10);
-}
-:root[data-palette="indigo"][data-theme="dark"] {
-  --bg: #0d0d12; --surface: #16161e; --text: #f3f3f8; --muted: #9a9aa6;
-  --faint: #26262f; --accent: #7669ff; --soft: #1d1c30; --shadow: rgba(0,0,0,.5);
-}
-
-:root[data-palette="oxblood"][data-theme="light"] {
-  --bg: #f2ebe0; --surface: #fbf7ef; --text: #281517; --muted: #6f544f;
-  --faint: #e1d5c5; --accent: #7d2027; --soft: #eeddd7; --shadow: rgba(60,20,20,.10);
-}
-:root[data-palette="oxblood"][data-theme="dark"] {
-  --bg: #190f11; --surface: #221618; --text: #f1e3de; --muted: #b0908a;
-  --faint: #342629; --accent: #bd4650; --soft: #2d191c; --shadow: rgba(0,0,0,.5);
+:root {
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-fast: 120ms;
+  --dur-normal: 300ms;
+  --dur-carry: 520ms;
+  --spine-w: 58px;
+  --gap-shelf: 9px;
 }
 
-:root[data-palette="pine"][data-theme="light"] {
-  --bg: #eef2ee; --surface: #fbfdfb; --text: #12211a; --muted: #566159;
-  --faint: #d4e0d7; --accent: #1f6d4e; --soft: #dcefe4; --shadow: rgba(20,50,35,.10);
-}
-:root[data-palette="pine"][data-theme="dark"] {
-  --bg: #0b120e; --surface: #131b16; --text: #e9f3ec; --muted: #8fa397;
-  --faint: #22302a; --accent: #3fae82; --soft: #152420; --shadow: rgba(0,0,0,.5);
+:root,
+[data-theme='light'] {
+  --bg: #f0f0f5;
+  --panel: #ffffff;
+  --ink: #14141b;
+  --muted: #5b5b66;
+  --faint: #dcdce4;
+  --accent: #4a39ff;
+  --soft: #e9e6ff;
+  --shadow: rgba(30, 30, 60, 0.1);
 }
 
-:root[data-palette="ochre"][data-theme="light"] {
-  --bg: #f4efe6; --surface: #fdfaf3; --text: #241a0f; --muted: #6b5a44;
-  --faint: #e4d9c6; --accent: #b5730d; --soft: #f0e4cc; --shadow: rgba(60,45,15,.10);
+[data-theme='dark'] {
+  --bg: #0d0d12;
+  --panel: #16161e;
+  --ink: #f3f3f8;
+  --muted: #9a9aa6;
+  --faint: #26262f;
+  --accent: #7669ff;
+  --soft: #1d1c30;
+  --shadow: rgba(0, 0, 0, 0.5);
 }
-:root[data-palette="ochre"][data-theme="dark"] {
-  --bg: #14100a; --surface: #1c1710; --text: #f3ecdd; --muted: #a5947a;
-  --faint: #2f2818; --accent: #e0a03a; --soft: #282013; --shadow: rgba(0,0,0,.5);
+
+[data-palette='oxblood'][data-theme='dark'] {
+  --bg: #190f11;
+  --panel: #221618;
+  --ink: #f1e3de;
+  --muted: #b0908a;
+  --faint: #342629;
+  --accent: #bd4650;
+  --soft: #2d191c;
+}
+[data-palette='oxblood'][data-theme='light'] {
+  --bg: #f2ebe0;
+  --panel: #fbf7ef;
+  --ink: #281517;
+  --muted: #6f544f;
+  --faint: #e1d5c5;
+  --accent: #7d2027;
+  --soft: #eeddd7;
+}
+[data-palette='pine'][data-theme='dark'] {
+  --bg: #0b120e;
+  --panel: #131b16;
+  --ink: #e9f3ec;
+  --muted: #8fa397;
+  --faint: #22302a;
+  --accent: #3fae82;
+  --soft: #152420;
+}
+[data-palette='pine'][data-theme='light'] {
+  --bg: #eef2ee;
+  --panel: #fbfdfb;
+  --ink: #12211a;
+  --muted: #566159;
+  --faint: #d4e0d7;
+  --accent: #1f6d4e;
+  --soft: #dcefe4;
+}
+[data-palette='ochre'][data-theme='dark'] {
+  --bg: #14100a;
+  --panel: #1c1710;
+  --ink: #f3ecdd;
+  --muted: #a5947a;
+  --faint: #2f2818;
+  --accent: #e0a03a;
+  --soft: #282013;
+}
+[data-palette='ochre'][data-theme='light'] {
+  --bg: #f4efe6;
+  --panel: #fdfaf3;
+  --ink: #241a0f;
+  --muted: #6b5a44;
+  --faint: #e4d9c6;
+  --accent: #b5730d;
+  --soft: #f0e4cc;
 }

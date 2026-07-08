@@ -5,21 +5,19 @@ export function Spines() {
   const active = useAppStore((s) => s.active);
   const setActive = useAppStore((s) => s.setActive);
   return (
-    <nav
-      aria-label="Sections"
-      className="fixed left-4 top-1/2 z-10 flex -translate-y-1/2 flex-col gap-2"
-    >
+    <nav className="shelf shelf-left" aria-label="Sections">
       {SECTIONS.map((name, i) => (
         <button
           key={name}
+          type="button"
+          className={`spine${i === active ? ' is-active' : ''}`}
           data-idx={i}
           aria-current={i === active ? 'true' : undefined}
+          aria-label={name}
           onClick={() => setActive(i)}
-          className={`text-left font-mono text-sm transition-colors ${
-            i === active ? 'text-accent' : 'text-muted hover:text-text'
-          }`}
         >
-          {name}
+          <span className="spnum">{String(i + 1).padStart(2, '0')}</span>
+          <span className="spname">{name}</span>
         </button>
       ))}
     </nav>

@@ -3,23 +3,21 @@ import { siteData } from '../../data/site';
 export function Projects() {
   const { projects } = siteData;
   return (
-    <div className="max-w-2xl">
-      <h2 className="font-display text-4xl">projects</h2>
-      <ul className="mt-8 space-y-6">
+    <div>
+      <p className="eyebrow">04 — projects</p>
+      <h2 className="section-h">built &amp; shipped</h2>
+      <div className="proj-list">
         {projects.map((p) => (
-          <li key={p.name} className="border-t border-faint pt-4">
-            <a href={p.href} target="_blank" rel="noreferrer" className="group block">
-              <div className="flex items-baseline justify-between gap-4">
-                <span className="font-display text-3xl group-hover:text-accent">{p.name}</span>
-                <span className="font-mono text-sm text-muted group-hover:text-accent">
-                  {p.cta}
-                </span>
-              </div>
-              <p className="mt-1 text-muted">{p.blurb}</p>
-            </a>
-          </li>
+          <a className="proj-row" key={p.name} href={p.href} target="_blank" rel="noreferrer">
+            <span className="proj-main">
+              <span className="proj-name">{p.name}</span>
+              <span className="proj-blurb">{p.blurb}</span>
+            </span>
+            <span className="proj-cta">{p.cta}</span>
+            <span className="peek peek-a" aria-hidden />
+          </a>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

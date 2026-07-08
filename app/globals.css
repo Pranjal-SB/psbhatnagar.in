@@ -3,3 +3,4 @@
 @tailwind utilities;
 
 @import '../theme/tokens.css';
+@import '../theme/site.css';

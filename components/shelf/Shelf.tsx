@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { useShelfNav } from '../nav/useShelfNav';
+import { TopBar } from '../nav/TopBar';
 import { Panel } from './Panel';
 import { Spines } from './Spines';
 import { Home } from '../sections/Home';
@@ -19,12 +20,18 @@ export function Shelf() {
   useShelfNav(() => setPaletteOpen(true));
   const Active = SECTION_COMPONENTS[active];
   return (
-    <main className="relative h-dvh overflow-hidden">
-      <Spines />
-      <Panel>
-        <Active />
-      </Panel>
-      {/* CommandPalette mounts here in Task 8 */}
-    </main>
+    <div className="stage-root desktop">
+      <div className="grain" aria-hidden />
+      <TopBar onOpenPalette={() => setPaletteOpen(true)} />
+      <div className="stage">
+        <Spines />
+        <main className="spread">
+          <Panel>
+            <Active />
+          </Panel>
+          {/* CommandPalette mounts here in Task 8 */}
+        </main>
+      </div>
+    </div>
   );
 }
