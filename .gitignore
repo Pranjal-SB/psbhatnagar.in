@@ -4,12 +4,26 @@ old/
 # local agent/editor config — not part of the public site
 .claude/
 
+# AI planning artifacts — local reference only
+docs/superpowers/
+
 # dependencies
 node_modules/
 
-# build output
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# build output (stale vanilla)
 dist/
 .vite/
+
+# test artifacts
+test-results/
+playwright-report/
+.playwright-mcp/
 
 # env / secrets
 .env
