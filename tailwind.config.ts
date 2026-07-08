@@ -10,6 +10,8 @@ export default {
         text: 'var(--text)',
         accent: 'var(--accent)',
         muted: 'var(--muted)',
+        faint: 'var(--faint)',
+        soft: 'var(--soft)',
       },
       fontFamily: {
         display: ['var(--font-display)'],

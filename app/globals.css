@@ -2,4 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-/* token sets imported in Task 3 */
+@import '../theme/tokens.css';

@@ -1,5 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { ThemeProvider } from '../theme/ThemeProvider';
+import { NO_FLASH_SCRIPT } from '../theme/no-flash';
 
 export const metadata: Metadata = {
   title: 'Pranjal Bhatnagar',
@@ -8,8 +10,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" data-palette="indigo" data-theme="light">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />
+      </head>
+      <body className="bg-bg text-text">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
