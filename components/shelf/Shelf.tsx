@@ -1,5 +1,7 @@
 'use client';
-import { useAppStore } from '../../store/useAppStore';
+import { useRef } from 'react';
+import { AnimatePresence } from 'motion/react';
+import { useAppStore, SECTIONS } from '../../store/useAppStore';
 import { useShelfNav } from '../nav/useShelfNav';
 import { TopBar } from '../nav/TopBar';
 import { Panel } from './Panel';
@@ -16,6 +18,9 @@ const SECTION_COMPONENTS = [Home, About, Skills, Projects, Gallery, Connect];
 export function Shelf() {
   const active = useAppStore((s) => s.active);
   useShelfNav();
+  const prev = useRef(active);
+  const dir = active >= prev.current ? 1 : -1;
+  prev.current = active;
   const Active = SECTION_COMPONENTS[active];
   return (
     <div className="stage-root desktop">
@@ -24,9 +29,11 @@ export function Shelf() {
       <div className="stage">
         <Spines />
         <main className="spread">
-          <Panel>
-            <Active />
-          </Panel>
+          <AnimatePresence mode="wait" custom={dir}>
+            <Panel key={SECTIONS[active]} dir={dir}>
+              <Active />
+            </Panel>
+          </AnimatePresence>
         </main>
       </div>
     </div>
