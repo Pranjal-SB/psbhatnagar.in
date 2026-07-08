@@ -1,36 +1,23 @@
-# stale prototypes / prior-session artifacts — kept locally, not tracked
+/AGENTS.md
+/CLAUDE.md
+/README.md
+/TODO.md
+docs/
 old/
-
-# local agent/editor config — not part of the public site
 .claude/
-
-# AI planning artifacts — local reference only
-docs/superpowers/
-
-# dependencies
 node_modules/
-
-# next.js
 .next/
 out/
 next-env.d.ts
 *.tsbuildinfo
-
-# build output (stale vanilla)
 dist/
 .vite/
-
-# test artifacts
 test-results/
 playwright-report/
 .playwright-mcp/
-
-# env / secrets
 .env
 .env.*
 !.env.example
-
-# editor / OS cruft
 .DS_Store
 Thumbs.db
 *.log
