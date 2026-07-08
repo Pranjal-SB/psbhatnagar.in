@@ -140,20 +140,6 @@ body {
   transition: all var(--dur-normal) var(--ease);
 }
 [data-theme='dark'] .theme-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
-.goto {
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--accent);
-  background: var(--soft);
-  border: 1px solid var(--faint);
-  border-radius: 6px;
-  padding: 7px 11px;
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease);
-}
-.goto:active { transform: scale(0.94); }
 
 /* ---------- shelf / spines ---------- */
 .stage {

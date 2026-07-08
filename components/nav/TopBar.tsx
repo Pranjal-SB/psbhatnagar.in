@@ -2,7 +2,7 @@
 import { useAppStore, SECTIONS } from '../../store/useAppStore';
 import { PALETTES } from '../../theme/palettes';
 
-export function TopBar({ onOpenPalette }: { onOpenPalette: () => void }) {
+export function TopBar() {
   const active = useAppStore((s) => s.active);
   const theme = useAppStore((s) => s.theme);
   const setActive = useAppStore((s) => s.setActive);
@@ -53,9 +53,6 @@ export function TopBar({ onOpenPalette }: { onOpenPalette: () => void }) {
         <button className="theme-toggle" aria-label="Toggle light and dark theme" onClick={toggleTheme}>
           <span className="theme-dot" aria-hidden />
           <span>{theme === 'light' ? 'dark' : 'light'}</span>
-        </button>
-        <button className="goto" aria-label="Go to section" aria-keyshortcuts="Shift+P" onClick={onOpenPalette}>
-          ⇧P
         </button>
       </div>
     </header>

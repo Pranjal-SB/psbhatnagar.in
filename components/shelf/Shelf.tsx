@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { useShelfNav } from '../nav/useShelfNav';
 import { TopBar } from '../nav/TopBar';
@@ -16,20 +15,18 @@ const SECTION_COMPONENTS = [Home, About, Skills, Projects, Gallery, Connect];
 
 export function Shelf() {
   const active = useAppStore((s) => s.active);
-  const [, setPaletteOpen] = useState(false);
-  useShelfNav(() => setPaletteOpen(true));
+  useShelfNav();
   const Active = SECTION_COMPONENTS[active];
   return (
     <div className="stage-root desktop">
       <div className="grain" aria-hidden />
-      <TopBar onOpenPalette={() => setPaletteOpen(true)} />
+      <TopBar />
       <div className="stage">
         <Spines />
         <main className="spread">
           <Panel>
             <Active />
           </Panel>
-          {/* CommandPalette mounts here in Task 8 */}
         </main>
       </div>
     </div>

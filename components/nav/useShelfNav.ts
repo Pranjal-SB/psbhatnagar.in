@@ -15,7 +15,7 @@ export function stepFromWheel(
 const WHEEL_THRESHOLD = 40;
 const WHEEL_LOCK_MS = 450;
 
-export function useShelfNav(onOpenPalette: () => void) {
+export function useShelfNav() {
   const setActive = useAppStore((s) => s.setActive);
   useEffect(() => {
     let acc = 0;
@@ -37,10 +37,6 @@ export function useShelfNav(onOpenPalette: () => void) {
         setActive(useAppStore.getState().active + 1);
       else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')
         setActive(useAppStore.getState().active - 1);
-      else if (e.shiftKey && (e.key === 'P' || e.key === 'p')) {
-        e.preventDefault();
-        onOpenPalette();
-      }
     };
     window.addEventListener('wheel', onWheel, { passive: true });
     window.addEventListener('keydown', onKey);
@@ -48,5 +44,5 @@ export function useShelfNav(onOpenPalette: () => void) {
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKey);
     };
-  }, [setActive, onOpenPalette]);
+  }, [setActive]);
 }
