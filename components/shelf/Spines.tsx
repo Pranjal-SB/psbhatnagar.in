@@ -8,7 +8,7 @@ export function Spines() {
   const setActive = useAppStore((s) => s.setActive);
   const reduced = useReducedMotionSafe();
   return (
-    <nav className="shelf shelf-left" aria-label="Sections">
+    <nav className="shelf shelf-right" aria-label="Sections">
       {SECTIONS.map((name, i) => (
         <button
           key={name}

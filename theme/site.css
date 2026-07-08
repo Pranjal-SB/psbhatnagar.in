@@ -153,7 +153,33 @@ body {
   min-height: 0;
 }
 .shelf { flex: 0 0 auto; display: flex; gap: var(--gap-shelf); align-items: stretch; }
-.spread { position: relative; flex: 1; min-width: 0; }
+.spread { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+.wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 2.5vw, 40px);
+  background: var(--soft);
+  pointer-events: none;
+  will-change: transform;
+}
+.wipe-num {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: clamp(40px, 8vw, 120px);
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+.wipe-name {
+  font-family: 'Clash Display', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(40px, 8vw, 120px);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
 .spine {
   width: var(--spine-w);
   border-radius: 12px 12px 10px 10px;
