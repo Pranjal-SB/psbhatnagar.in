@@ -14,6 +14,19 @@ export function stepFromWheel(
 
 const WHEEL_THRESHOLD = 40;
 const WHEEL_LOCK_MS = 450;
+const SWIPE_THRESHOLD = 40;
+
+export function stepFromSwipe(
+  e: { dx: number; dy: number },
+  threshold: number,
+): -1 | 0 | 1 {
+  // Vertical only. Ignore horizontal-dominant drags so the browser's
+  // edge back-swipe is left untouched (ui-ux gesture-conflicts rule).
+  if (Math.abs(e.dx) > Math.abs(e.dy)) return 0;
+  if (e.dy <= -threshold) return 1; // swipe up → next
+  if (e.dy >= threshold) return -1; // swipe down → prev
+  return 0;
+}
 
 export function useShelfNav() {
   const setActive = useAppStore((s) => s.setActive);
@@ -38,11 +51,32 @@ export function useShelfNav() {
       else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')
         setActive(useAppStore.getState().active - 1);
     };
+    let startX = 0;
+    let startY = 0;
+    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.changedTouches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!isMobile()) return;
+      const t = e.changedTouches[0];
+      const step = stepFromSwipe(
+        { dx: t.clientX - startX, dy: t.clientY - startY },
+        SWIPE_THRESHOLD,
+      );
+      if (step !== 0) setActive(useAppStore.getState().active + step);
+    };
     window.addEventListener('wheel', onWheel, { passive: true });
     window.addEventListener('keydown', onKey);
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
     return () => {
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKey);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchend', onTouchEnd);
     };
   }, [setActive]);
 }
