@@ -93,6 +93,11 @@ body {
   transition: all var(--dur-normal) var(--ease);
 }
 .notch.is-active { width: 26px; background: var(--accent); }
+
+/* mobile-only elements: hidden on desktop by default */
+.dock { display: none; }
+.topbar-toggle { display: none; }
+.topbar-toggle-wrap { display: none; }
 .controls { display: flex; align-items: center; gap: 18px; }
 .palettes { display: flex; align-items: center; gap: 13px; }
 .pal {
@@ -373,3 +378,73 @@ body {
 }
 .peek-a { right: 66px; background: linear-gradient(135deg, var(--accent), var(--soft)); }
 .proj-row:hover .peek-a { opacity: 1; transform: translateY(0) rotate(-7deg); }
+
+/* ---------- mobile (<=768px) ---------- */
+@media (max-width: 768px) {
+  .stage-root { padding: 16px 18px 0; }
+
+  .topbar { gap: 12px; }
+  .brand { font-size: 24px; }
+  .notches { display: none; }
+  .controls { display: none; } /* palette + theme move into popover */
+  .topbar-toggle { display: inline-flex; }
+
+  .stage { flex-direction: column; gap: 0; padding-top: 12px; }
+  .shelf { display: none; } /* desktop vertical spines hidden */
+  .spread { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+
+  .dock {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: color-mix(in oklab, var(--panel) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--faint);
+  }
+  .dock-tabs { display: flex; align-items: stretch; justify-content: space-between; }
+  .dock-tab {
+    position: relative;
+    flex: 1;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .dock-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color var(--dur-normal) var(--ease);
+  }
+  .dock-tab.is-active .dock-num { color: var(--accent); }
+  .dock-flag {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 22px;
+    height: 3px;
+    margin-left: -11px;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+  .dock-label {
+    text-align: center;
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    min-height: 1.2em;
+  }
+}
