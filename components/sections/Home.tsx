@@ -7,8 +7,6 @@ export function Home() {
   const setActive = useAppStore((s) => s.setActive);
   return (
     <div className="panel-body">
-      <div className="orb orb-a" aria-hidden />
-      <div className="orb orb-b" aria-hidden />
       <p className="eyebrow">01 — home</p>
       <h1 className="hero-h">
         <span className="rise">builds tools that</span>

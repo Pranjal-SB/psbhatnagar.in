@@ -359,11 +359,6 @@ body {
 .connect-link:hover { color: var(--accent); transform: translateX(8px); }
 
 /* ---------- fx (static decor) ---------- */
-.orb { position: absolute; border-radius: 50%; pointer-events: none; }
-.orb-a { right: -40px; top: -30px; width: min(46vh, 520px); height: min(46vh, 520px); background: radial-gradient(circle at 40% 40%, var(--soft), transparent 70%); }
-.orb-b { right: 64px; top: 88px; width: min(30vh, 340px); height: min(30vh, 340px); background: radial-gradient(circle at 50% 50%, var(--accent), transparent 66%); opacity: 0.1; filter: blur(4px); }
-.about-orb { right: 56px; top: auto; bottom: -40px; width: min(26vh, 300px); height: min(26vh, 300px); background: radial-gradient(circle, var(--soft), transparent 70%); opacity: 0.55; z-index: -1; }
-.ring { position: absolute; right: -60px; top: -46px; width: min(42vh, 460px); height: min(42vh, 460px); border-radius: 50%; border: 1.5px dashed var(--faint); pointer-events: none; z-index: -1; }
 .peek {
   position: absolute;
   top: -16px;
@@ -378,6 +373,3 @@ body {
 }
 .peek-a { right: 66px; background: linear-gradient(135deg, var(--accent), var(--soft)); }
 .proj-row:hover .peek-a { opacity: 1; transform: translateY(0) rotate(-7deg); }
-.gallery-glow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
-.glow-a { position: absolute; left: -8%; top: -24%; width: 60%; height: 82%; background: radial-gradient(circle, var(--accent), transparent 64%); opacity: 0.1; filter: blur(30px); }
-.glow-b { position: absolute; right: -6%; bottom: -18%; width: 52%; height: 72%; background: radial-gradient(circle, var(--soft), transparent 66%); opacity: 0.7; filter: blur(22px); }

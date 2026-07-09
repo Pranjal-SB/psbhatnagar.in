@@ -4,8 +4,6 @@ export function About() {
   const { about } = siteData;
   return (
     <div>
-      <div className="ring" aria-hidden />
-      <div className="orb orb-b about-orb" aria-hidden />
       <p className="eyebrow">02 — about</p>
       <p className="about-lead">{about.lead}</p>
       <div className="rule" />

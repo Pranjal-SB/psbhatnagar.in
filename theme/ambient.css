@@ -1,0 +1,63 @@
+/* ---------- ambient background (per-section, drifting) ---------- */
+.ambient { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.amb-anchor {
+  position: absolute;
+  will-change: transform, opacity;
+  transition: transform 1.2s var(--ease), opacity 1.2s var(--ease);
+}
+.amb-core { position: absolute; inset: 0; will-change: transform; }
+
+/* orb-a — large accent/soft radial */
+.amb-orb-a { width: min(52vh, 560px); height: min(52vh, 560px); right: -6%; top: -10%; opacity: 0.5; }
+.amb-orb-a .amb-core {
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, var(--soft), transparent 70%);
+  animation: psb-drift-a 34s var(--ease) infinite alternate;
+}
+
+/* orb-b — small accent radial */
+.amb-orb-b { width: min(30vh, 340px); height: min(30vh, 340px); right: 20%; top: 30%; opacity: 0.14; }
+.amb-orb-b .amb-core {
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent), transparent 66%);
+  filter: blur(6px);
+  animation: psb-drift-b 26s var(--ease) infinite alternate;
+}
+
+/* ring — dashed circle */
+.amb-ring { width: min(42vh, 460px); height: min(42vh, 460px); right: 4%; top: 6%; opacity: 0.15; }
+.amb-ring-core {
+  border-radius: 50%;
+  border: 1.5px dashed var(--faint);
+  animation: psb-spin 90s linear infinite;
+}
+
+/* per-section composition (0 Home · 1 About · 2 Skills · 3 Projects · 4 Gallery · 5 Connect) */
+.ambient[data-active='1'] .amb-ring { right: -8%; top: -12%; opacity: 0.5; transform: scale(1.05); }
+.ambient[data-active='1'] .amb-orb-a { opacity: 0.35; }
+.ambient[data-active='2'] .amb-orb-a { right: 30%; top: -20%; opacity: 0.4; }
+.ambient[data-active='2'] .amb-ring { opacity: 0.06; }
+.ambient[data-active='3'] .amb-orb-b { right: 8%; top: 12%; opacity: 0.2; }
+.ambient[data-active='4'] .amb-orb-a { right: -14%; top: -22%; opacity: 0.55; transform: scale(1.15); }
+.ambient[data-active='4'] .amb-orb-b { right: 4%; bottom: -12%; top: auto; opacity: 0.24; }
+.ambient[data-active='4'] .amb-ring { opacity: 0.05; }
+.ambient[data-active='5'] .amb-orb-a { right: 10%; top: 20%; opacity: 0.4; }
+.ambient[data-active='5'] .amb-ring { right: 40%; top: 30%; opacity: 0.1; }
+
+@keyframes psb-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-4%, 5%, 0) scale(1.06); }
+}
+@keyframes psb-drift-b {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(6%, -6%, 0); }
+}
+@keyframes psb-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amb-anchor { transition: none; }
+  .amb-core { animation: none !important; }
+}

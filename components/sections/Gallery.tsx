@@ -4,10 +4,6 @@ export function Gallery() {
   const { gallery } = siteData;
   return (
     <div>
-      <div className="gallery-glow" aria-hidden>
-        <div className="glow-a" />
-        <div className="glow-b" />
-      </div>
       <p className="eyebrow">05 — gallery</p>
       <h2 className="section-h tight">through my lens</h2>
       <p className="sub-copy">a few frames — film &amp; digital.</p>
