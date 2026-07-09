@@ -80,14 +80,14 @@ export function TopBar() {
         <button
           className="topbar-toggle"
           aria-label="Theme and palette"
-          aria-haspopup="true"
+          aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
         >
           <SunMoon size={18} strokeWidth={2} aria-hidden />
         </button>
         {open && (
-          <div className="topbar-pop" role="menu" aria-label="Theme and palette">
+          <div className="topbar-pop" role="group" aria-label="Theme and palette">
             <div className="pop-group">
               <p className="pop-label">Palette</p>
               <div className="palettes" role="group" aria-label="Color palette">
