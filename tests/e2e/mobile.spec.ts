@@ -31,3 +31,17 @@ test('mobile: no horizontal overflow', async ({ page }) => {
   );
   expect(overflow).toBe(false);
 });
+
+test('mobile popover toggles palette + theme controls', async ({ page }) => {
+  await seedMobile(page);
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('.topbar-pop')).toHaveCount(0);
+  await page.locator('.topbar-toggle').click();
+  await expect(page.locator('.topbar-pop')).toBeVisible();
+  await expect(page.locator('.topbar-pop .pal[data-pal="pine"]')).toBeVisible();
+  await page.locator('.topbar-pop .pal[data-pal="pine"]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-palette', 'pine');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.topbar-pop')).toHaveCount(0);
+});
