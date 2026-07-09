@@ -1,8 +1,8 @@
 export interface Project {
   name: string;
   blurb: string;
-  href: string;
-  cta: string;
+  slug: string;
+  links: { live?: string; repo?: string };
 }
 export interface SkillGroup {
   label: string;
@@ -52,14 +52,14 @@ export const siteData: SiteData = {
     {
       name: 'examdb',
       blurb: 'past papers, organised — for last-minute studiers',
-      href: 'https://examdb.vercel.app',
-      cta: 'live ↗',
+      slug: 'examdb',
+      links: { live: 'https://examdb.vercel.app' },
     },
     {
       name: 'outn',
       blurb: 'on GitHub — small tool, honest scope',
-      href: 'https://github.com',
-      cta: 'repo ↗',
+      slug: 'outn',
+      links: { repo: 'https://github.com' },
     },
   ],
   gallery: [
