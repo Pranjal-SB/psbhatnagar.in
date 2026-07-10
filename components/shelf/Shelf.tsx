@@ -6,6 +6,7 @@ import { useShelfNav } from '../nav/useShelfNav';
 import { TopBar } from '../nav/TopBar';
 import { Panel } from './Panel';
 import { Spines } from './Spines';
+import { Dock } from '../nav/Dock';
 import { Ambient } from './Ambient';
 import { EASE } from '../../lib/motion';
 import { Home } from '../sections/Home';
@@ -97,6 +98,7 @@ export function Shelf() {
           </div>
         </main>
         <Spines />
+        <Dock />
       </div>
     </div>
   );
