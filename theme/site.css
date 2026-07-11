@@ -88,54 +88,82 @@ body {
 .dock { display: none; }
 .topbar-toggle { display: none; }
 .topbar-toggle-wrap { display: none; }
-.controls { display: flex; align-items: center; gap: 18px; }
-.palettes { display: flex; align-items: center; gap: 13px; }
+/* theme kit: one pill housing palette diamonds + theme toggle */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px;
+  background: var(--panel);
+  border: 1px solid var(--faint);
+  border-radius: 999px;
+  box-shadow: 0 1px 2px var(--shadow);
+  transition: background var(--dur-normal) var(--ease), border-color var(--dur-normal) var(--ease);
+}
+.controls-rule { width: 1px; height: 18px; background: var(--faint); }
+.palettes { display: flex; align-items: center; gap: 2px; }
 .pal {
-  width: 13px;
-  height: 13px;
-  border-radius: 2px;
+  position: relative;
+  width: 28px;
+  height: 28px;
   border: 0;
   padding: 0;
+  border-radius: 50%;
+  background: transparent;
   cursor: pointer;
+}
+.pal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
   background: var(--diamond);
   transform: rotate(45deg);
   outline: 2px solid transparent;
   outline-offset: 2px;
   transition: transform 0.18s var(--ease), outline-color 0.18s var(--ease);
 }
-.pal:hover { transform: rotate(45deg) scale(1.15); }
-.pal:active { transform: rotate(45deg) scale(0.95); }
-[data-palette='indigo'] .pal[data-pal='indigo'],
-[data-palette='oxblood'] .pal[data-pal='oxblood'],
-[data-palette='pine'] .pal[data-pal='pine'],
-[data-palette='ochre'] .pal[data-pal='ochre'] {
+@media (hover: hover) and (pointer: fine) {
+  .pal:hover::before { transform: rotate(45deg) scale(1.25); }
+}
+.pal:active::before { transform: rotate(45deg) scale(0.9); }
+[data-palette='indigo'] .pal[data-pal='indigo']::before,
+[data-palette='oxblood'] .pal[data-pal='oxblood']::before,
+[data-palette='pine'] .pal[data-pal='pine']::before,
+[data-palette='ochre'] .pal[data-pal='ochre']::before {
   outline-color: var(--ink);
 }
 .theme-toggle {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-family: 'General Sans', system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
   color: var(--ink);
-  background: var(--panel);
-  border: 1px solid var(--faint);
-  clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
-  padding: 8px 16px;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
   cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease);
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
-.theme-toggle:active { transform: scale(0.96); }
-.theme-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 1px;
-  transform: rotate(45deg);
-  background: var(--accent);
-  transition: all var(--dur-normal) var(--ease);
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover { background: var(--soft); }
 }
-[data-theme='dark'] .theme-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
+.theme-toggle:active { transform: scale(0.92); }
+.theme-icons { position: relative; width: 16px; height: 16px; display: block; }
+.theme-icons svg {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--dur-normal) var(--ease), transform var(--dur-normal) var(--ease);
+}
+.theme-sun { opacity: 1; transform: rotate(0deg); }
+.theme-moon { opacity: 0; transform: rotate(-90deg); }
+[data-theme='dark'] .theme-sun { opacity: 0; transform: rotate(90deg); }
+[data-theme='dark'] .theme-moon { opacity: 1; transform: rotate(0deg); }
 
 /* ---------- shelf / spines ---------- */
 .stage {
@@ -610,4 +638,9 @@ body {
     text-transform: uppercase;
     color: var(--muted);
   }
+  /* touch targets inside the popover (44px minimum) */
+  .topbar-pop .palettes { gap: 4px; }
+  .topbar-pop .pal { width: 44px; height: 44px; }
+  .topbar-pop .pal::before { width: 16px; height: 16px; }
+  .topbar-pop .theme-toggle { width: 44px; height: 44px; border: 1px solid var(--faint); }
 }

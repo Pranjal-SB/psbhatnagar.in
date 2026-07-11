@@ -1,8 +1,42 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { SunMoon } from 'lucide-react';
+import { Sun, Moon, SunMoon } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { PALETTES } from '../../theme/palettes';
+
+function PaletteGroup({ onPick }: { onPick: (name: (typeof PALETTES)[number]['name']) => void }) {
+  return (
+    <div className="palettes" role="group" aria-label="Color palette">
+      {PALETTES.map((p) => (
+        <button
+          key={p.name}
+          className="pal"
+          data-pal={p.name}
+          title={`${p.label} palette`}
+          aria-label={`${p.label} palette`}
+          style={{ '--diamond': p.swatch } as React.CSSProperties}
+          onClick={() => onPick(p.name)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ThemeToggle({ theme, onToggle }: { theme: string; onToggle: () => void }) {
+  return (
+    <button
+      className="theme-toggle"
+      title={theme === 'light' ? 'switch to dark' : 'switch to light'}
+      aria-label="Toggle light and dark theme"
+      onClick={onToggle}
+    >
+      <span className="theme-icons" aria-hidden>
+        <Sun size={16} strokeWidth={2} className="theme-sun" />
+        <Moon size={16} strokeWidth={2} className="theme-moon" />
+      </span>
+    </button>
+  );
+}
 
 export function TopBar() {
   const theme = useAppStore((s) => s.theme);
@@ -51,22 +85,9 @@ export function TopBar() {
       </a>
 
       <div className="controls">
-        <div className="palettes" role="group" aria-label="Color palette">
-          {PALETTES.map((p) => (
-            <button
-              key={p.name}
-              className="pal"
-              data-pal={p.name}
-              aria-label={`${p.label} palette`}
-              style={{ '--diamond': p.swatch } as React.CSSProperties}
-              onClick={() => setPalette(p.name)}
-            />
-          ))}
-        </div>
-        <button className="theme-toggle" aria-label="Toggle light and dark theme" onClick={toggleTheme}>
-          <span className="theme-dot" aria-hidden />
-          <span>{theme === 'light' ? 'dark' : 'light'}</span>
-        </button>
+        <PaletteGroup onPick={setPalette} />
+        <span className="controls-rule" aria-hidden />
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
       </div>
 
       <div className="topbar-toggle-wrap" ref={wrapRef}>
@@ -83,25 +104,11 @@ export function TopBar() {
           <div className="topbar-pop" role="group" aria-label="Theme and palette">
             <div className="pop-group">
               <p className="pop-label">Palette</p>
-              <div className="palettes" role="group" aria-label="Color palette">
-                {PALETTES.map((p) => (
-                  <button
-                    key={p.name}
-                    className="pal"
-                    data-pal={p.name}
-                    aria-label={`${p.label} palette`}
-                    style={{ '--diamond': p.swatch } as React.CSSProperties}
-                    onClick={() => setPalette(p.name)}
-                  />
-                ))}
-              </div>
+              <PaletteGroup onPick={setPalette} />
             </div>
             <div className="pop-group">
               <p className="pop-label">Theme</p>
-              <button className="theme-toggle" aria-label="Toggle light and dark theme" onClick={toggleTheme}>
-                <span className="theme-dot" aria-hidden />
-                <span>{theme === 'light' ? 'dark' : 'light'}</span>
-              </button>
+              <ThemeToggle theme={theme} onToggle={toggleTheme} />
             </div>
           </div>
         )}
