@@ -104,6 +104,7 @@ body {
   transition: transform 0.18s var(--ease), outline-color 0.18s var(--ease);
 }
 .pal:hover { transform: rotate(45deg) scale(1.15); }
+.pal:active { transform: rotate(45deg) scale(0.95); }
 [data-palette='indigo'] .pal[data-pal='indigo'],
 [data-palette='oxblood'] .pal[data-pal='oxblood'],
 [data-palette='pine'] .pal[data-pal='pine'],
@@ -238,8 +239,14 @@ body {
   background: var(--panel);
   border: 1px solid var(--faint);
   box-shadow: 0 1px 2px var(--shadow);
-  transition: background var(--dur-normal) var(--ease), border-color var(--dur-normal) var(--ease),
-    box-shadow var(--dur-normal) var(--ease);
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-normal) var(--ease),
+    border-color var(--dur-normal) var(--ease), box-shadow var(--dur-normal) var(--ease);
+}
+.spine:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .spine:hover { transform: translateY(-3px); box-shadow: 0 10px 22px var(--shadow); }
+  .spine.is-active:hover { transform: none; }
+  .spine:active { transform: scale(0.97); }
 }
 .spine.is-active { background: var(--soft); border-color: var(--accent); box-shadow: 0 12px 26px var(--shadow); z-index: 2; }
 .spine-flag {
@@ -311,7 +318,8 @@ body {
 .word-squiggle { position: absolute; left: -4px; bottom: -0.1em; width: 104%; height: 0.34em; overflow: visible; z-index: 0; }
 .lead { font-size: 17px; line-height: 1.55; color: var(--muted); max-width: 34ch; margin: 28px 0 0; }
 .hero-cta { display: flex; align-items: center; gap: 22px; margin-top: 32px; }
-.link-btn { font-family: 'General Sans', system-ui, sans-serif; font-weight: 500; font-size: 15px; color: var(--accent); background: transparent; border: 0; padding: 0; cursor: pointer; }
+.link-btn { font-family: 'General Sans', system-ui, sans-serif; font-weight: 500; font-size: 15px; color: var(--accent); background: transparent; border: 0; padding: 0; cursor: pointer; transition: transform var(--dur-fast) var(--ease); }
+.link-btn:active { transform: scale(0.97); }
 .link-underline { font-weight: 500; font-size: 15px; color: var(--ink); text-decoration: none; border-bottom: 1.5px solid var(--faint); padding-bottom: 2px; }
 .about-lead {
   font-family: 'Clash Display', system-ui, sans-serif;
@@ -461,7 +469,9 @@ body {
     border: 0;
     cursor: pointer;
     touch-action: manipulation;
+    transition: transform var(--dur-fast) var(--ease);
   }
+  .dock-tab:active { transform: scale(0.94); }
   .dock-num {
     font-family: 'Space Mono', monospace;
     font-size: 16px;
