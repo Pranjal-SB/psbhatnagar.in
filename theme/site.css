@@ -182,9 +182,35 @@ body {
   align-items: center;
   justify-content: center;
   gap: clamp(16px, 2.5vw, 40px);
-  background: var(--soft);
+  background: var(--panel);
+  border-inline: 1px solid var(--faint);
+  box-shadow: 0 0 60px var(--shadow);
   pointer-events: none;
   will-change: transform;
+}
+.wipe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* entrance stagger — Panel remounts per section (key), so animation replays */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 0.5s var(--ease) both;
+  animation-delay: var(--rise-delay, 0.35s); /* clears the wipe reveal */
+}
+.rise-2 { --rise-delay: 0.41s; }
+.rise-3 { --rise-delay: 0.47s; }
+.rise-4 { --rise-delay: 0.53s; }
+.rise-5 { --rise-delay: 0.59s; }
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
 }
 .wipe-num {
   font-family: 'Space Mono', monospace;

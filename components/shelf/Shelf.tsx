@@ -16,8 +16,8 @@ import { Gallery } from '../sections/Gallery';
 import { Connect } from '../sections/Connect';
 
 const SECTION_COMPONENTS = [Home, About, Skills, Projects, Gallery, Connect];
-const WIPE_HALF = 0.46; // seconds per sweep half
-const WIPE_HOLD = 0.3; // seconds the curtain sits fully covering (name readable)
+const WIPE_HALF = 0.38; // seconds per sweep half
+const WIPE_HOLD = 0.22; // seconds the curtain sits fully covering (name readable)
 
 function prefersReduced(): boolean {
   return (
