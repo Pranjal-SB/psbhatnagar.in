@@ -66,7 +66,17 @@ export function useShelfNav() {
         { dx: t.clientX - startX, dy: t.clientY - startY },
         SWIPE_THRESHOLD,
       );
-      if (step !== 0) setActive(useAppStore.getState().active + step);
+      if (step === 0) return;
+      // Tall sections scroll inside the panel on mobile; only flip section
+      // when the panel is already at the edge the swipe pushes past.
+      const panel = document.querySelector('.panel');
+      if (panel) {
+        const canScrollDown = panel.scrollTop + panel.clientHeight < panel.scrollHeight - 1;
+        const canScrollUp = panel.scrollTop > 0;
+        if (step === 1 && canScrollDown) return;
+        if (step === -1 && canScrollUp) return;
+      }
+      setActive(useAppStore.getState().active + step);
     };
     window.addEventListener('wheel', onWheel, { passive: true });
     window.addEventListener('keydown', onKey);
