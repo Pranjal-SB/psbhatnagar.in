@@ -344,7 +344,7 @@ body {
 .section-h {
   font-family: 'Clash Display', system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(38px, 4.6vw, 64px);
+  font-size: clamp(42px, 5.2vw, 74px);
   line-height: 0.98;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -383,7 +383,7 @@ body {
 .hero-h {
   font-family: 'Clash Display', system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(46px, 6.6vw, 98px);
+  font-size: clamp(50px, 7vw, 106px);
   line-height: 0.94;
   letter-spacing: -0.025em;
   margin: 22px 0 0;
@@ -401,8 +401,8 @@ body {
 .about-lead {
   font-family: 'Clash Display', system-ui, sans-serif;
   font-weight: 500;
-  font-size: clamp(28px, 3.4vw, 46px);
-  line-height: 1.16;
+  font-size: clamp(30px, 3.8vw, 52px);
+  line-height: 1.14;
   letter-spacing: -0.02em;
   color: var(--ink);
   max-width: 22ch;
@@ -440,7 +440,7 @@ body {
   position: relative;
   font-family: 'Clash Display', system-ui, sans-serif;
   font-weight: 500;
-  font-size: clamp(24px, 2.8vw, 44px);
+  font-size: clamp(26px, 3.1vw, 50px);
   letter-spacing: -0.01em;
   line-height: 1.15;
   color: var(--ink);
@@ -476,7 +476,7 @@ body {
 }
 .proj-row:last-child { border-bottom: 1px solid var(--faint); }
 .proj-main { display: flex; align-items: baseline; gap: 16px; min-width: 0; }
-.proj-name { font-family: 'Clash Display', system-ui, sans-serif; font-weight: 600; font-size: clamp(28px, 2.6vw, 40px); color: var(--ink); }
+.proj-name { font-family: 'Clash Display', system-ui, sans-serif; font-weight: 600; font-size: clamp(30px, 3vw, 46px); color: var(--ink); }
 .proj-blurb { font-size: 15px; color: var(--muted); }
 .proj-cta { flex: 0 0 auto; font-size: 14px; color: var(--accent); }
 .sub-copy { font-size: 16px; color: var(--muted); margin: 0 0 30px; }
@@ -518,7 +518,8 @@ body {
   align-self: flex-start;
   font-family: 'Clash Display', system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(34px, 5vw, 84px);
+  font-size: clamp(32px, 4.2vw, 64px);
+  max-width: 100%;
   letter-spacing: -0.02em;
   color: var(--ink);
   text-decoration: none;
@@ -563,6 +564,7 @@ body {
     justify-content: flex-start;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
   /* centers short sections, top-aligns + scrolls tall ones */
   .panel > * { margin-block: auto; }
@@ -573,11 +575,12 @@ body {
   .home-meta { position: static; margin-top: 28px; flex-wrap: wrap; gap: 10px 16px; }
   .about-grid { grid-template-columns: 1fr; gap: 26px; align-items: start; }
   .skill-label { flex: 0 0 90px; }
+  .skill-set { gap: 4px 18px; }
   .proj-main { flex-wrap: wrap; gap: 4px 16px; }
   .peek { display: none; }
   .frames { grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .frame:nth-child(3n + 1) { transform: rotate(var(--rot)); }
-  .connect-mail { font-size: clamp(22px, 7.5vw, 38px); word-break: break-all; }
+  .connect-mail { font-size: clamp(17px, 5.4vw, 30px); overflow-wrap: anywhere; }
   .connect-row { flex-wrap: wrap; gap: 18px 26px; }
 
   .dock {
