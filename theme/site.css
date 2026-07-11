@@ -84,16 +84,6 @@ body {
   overflow: visible;
   pointer-events: none;
 }
-.notches { display: flex; align-items: center; gap: 6px; }
-.notch {
-  height: 5px;
-  width: 14px;
-  border-radius: 3px;
-  background: var(--faint);
-  transition: all var(--dur-normal) var(--ease);
-}
-.notch.is-active { width: 26px; background: var(--accent); }
-
 /* mobile-only elements: hidden on desktop by default */
 .dock { display: none; }
 .topbar-toggle { display: none; }
@@ -385,7 +375,6 @@ body {
 
   .topbar { gap: 12px; }
   .brand { font-size: 24px; }
-  .notches { display: none; }
   .controls { display: none; } /* palette + theme move into popover */
   .topbar-toggle { display: inline-flex; }
 

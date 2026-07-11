@@ -7,7 +7,6 @@ import { TopBar } from '../nav/TopBar';
 import { Panel } from './Panel';
 import { Spines } from './Spines';
 import { Dock } from '../nav/Dock';
-import { Ambient } from './Ambient';
 import { EASE } from '../../lib/motion';
 import { Home } from '../sections/Home';
 import { About } from '../sections/About';
@@ -87,8 +86,7 @@ export function Shelf() {
       <div className="grain" aria-hidden />
       <TopBar />
       <div className="stage">
-        <main className="spread">
-          <Ambient active={shown} />
+        <main className="spread" data-active={shown}>
           <Panel key={SECTIONS[shown]}>
             <Active />
           </Panel>

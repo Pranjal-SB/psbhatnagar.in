@@ -1,11 +1,10 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { SunMoon } from 'lucide-react';
-import { useAppStore, SECTIONS } from '../../store/useAppStore';
+import { useAppStore } from '../../store/useAppStore';
 import { PALETTES } from '../../theme/palettes';
 
 export function TopBar() {
-  const active = useAppStore((s) => s.active);
   const theme = useAppStore((s) => s.theme);
   const setActive = useAppStore((s) => s.setActive);
   const setPalette = useAppStore((s) => s.setPalette);
@@ -50,12 +49,6 @@ export function TopBar() {
           />
         </svg>
       </a>
-
-      <div className="notches" aria-hidden>
-        {SECTIONS.map((name, i) => (
-          <span key={name} className={`notch${i === active ? ' is-active' : ''}`} />
-        ))}
-      </div>
 
       <div className="controls">
         <div className="palettes" role="group" aria-label="Color palette">
