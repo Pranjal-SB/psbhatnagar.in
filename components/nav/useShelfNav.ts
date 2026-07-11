@@ -12,19 +12,21 @@ export function stepFromWheel(
   return 0;
 }
 
-const WHEEL_THRESHOLD = 40;
-const WHEEL_LOCK_MS = 450;
-const SWIPE_THRESHOLD = 40;
+const WHEEL_THRESHOLD = 100;
+const WHEEL_LOCK_MS = 650;
+const GESTURE_GAP_MS = 200; // silence this long = new scroll gesture
+const SWIPE_THRESHOLD = 50;
+const EDGE_GUARD_PX = 24; // leave the browser's edge back-swipe alone
 
 export function stepFromSwipe(
   e: { dx: number; dy: number },
   threshold: number,
 ): -1 | 0 | 1 {
-  // Vertical only. Ignore horizontal-dominant drags so the browser's
-  // edge back-swipe is left untouched (ui-ux gesture-conflicts rule).
-  if (Math.abs(e.dx) > Math.abs(e.dy)) return 0;
-  if (e.dy <= -threshold) return 1; // swipe up → next
-  if (e.dy >= threshold) return -1; // swipe down → prev
+  // Horizontal only — matches the wipe direction; vertical stays free for
+  // in-panel content scrolling.
+  if (Math.abs(e.dy) > Math.abs(e.dx)) return 0;
+  if (e.dx <= -threshold) return 1; // swipe left → next
+  if (e.dx >= threshold) return -1; // swipe right → prev
   return 0;
 }
 
@@ -33,14 +35,26 @@ export function useShelfNav() {
   useEffect(() => {
     let acc = 0;
     let locked = false;
+    let lastT = 0;
+    let swallowMomentum = false;
     const onWheel = (e: WheelEvent) => {
-      acc += Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const now = performance.now();
+      const gap = now - lastT;
+      lastT = now;
       if (locked) return;
+      // after a step, ignore the rest of the same gesture (trackpad momentum)
+      if (swallowMomentum) {
+        if (gap < GESTURE_GAP_MS) return;
+        swallowMomentum = false;
+      }
+      if (gap > GESTURE_GAP_MS) acc = 0; // fresh gesture
+      acc += Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
       const step = stepFromWheel({ deltaX: acc, deltaY: 0 }, WHEEL_THRESHOLD);
       if (step !== 0) {
         setActive(useAppStore.getState().active + step);
         acc = 0;
         locked = true;
+        swallowMomentum = true;
         setTimeout(() => (locked = false), WHEEL_LOCK_MS);
       }
     };
@@ -53,30 +67,22 @@ export function useShelfNav() {
     };
     let startX = 0;
     let startY = 0;
+    let fromEdge = false;
     const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
     const onTouchStart = (e: TouchEvent) => {
       const t = e.changedTouches[0];
       startX = t.clientX;
       startY = t.clientY;
+      fromEdge = startX < EDGE_GUARD_PX || startX > window.innerWidth - EDGE_GUARD_PX;
     };
     const onTouchEnd = (e: TouchEvent) => {
-      if (!isMobile()) return;
+      if (!isMobile() || fromEdge) return;
       const t = e.changedTouches[0];
       const step = stepFromSwipe(
         { dx: t.clientX - startX, dy: t.clientY - startY },
         SWIPE_THRESHOLD,
       );
-      if (step === 0) return;
-      // Tall sections scroll inside the panel on mobile; only flip section
-      // when the panel is already at the edge the swipe pushes past.
-      const panel = document.querySelector('.panel');
-      if (panel) {
-        const canScrollDown = panel.scrollTop + panel.clientHeight < panel.scrollHeight - 1;
-        const canScrollUp = panel.scrollTop > 0;
-        if (step === 1 && canScrollDown) return;
-        if (step === -1 && canScrollUp) return;
-      }
-      setActive(useAppStore.getState().active + step);
+      if (step !== 0) setActive(useAppStore.getState().active + step);
     };
     window.addEventListener('wheel', onWheel, { passive: true });
     window.addEventListener('keydown', onKey);

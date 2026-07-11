@@ -19,10 +19,11 @@ test('case study page has no serious axe violations', async ({ page }) => {
   expect(serious).toEqual([]);
 });
 
-test('mobile shelf + open popover have no serious axe violations', async ({ page }) => {
+test('mobile shelf + fanned-out theme kit have no serious axe violations', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  await page.locator('.topbar-toggle').click();
+  // fan the palette kit out so the swatch buttons are in the scanned state
+  await page.evaluate(() => document.querySelector('.palettes')?.classList.add('is-open'));
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa'])
     .analyze();

@@ -86,8 +86,6 @@ body {
 }
 /* mobile-only elements: hidden on desktop by default */
 .dock { display: none; }
-.topbar-toggle { display: none; }
-.topbar-toggle-wrap { display: none; }
 /* theme kit: one pill housing palette diamonds + theme toggle */
 .controls {
   display: flex;
@@ -113,9 +111,9 @@ body {
   cursor: pointer;
   overflow: hidden;
 }
-/* desktop: rest state shows only the selected swatch; hover/focus fans the rest out */
+/* rest state shows only the selected swatch; hover (desktop) or tap (touch) fans the rest out */
+.controls .pal { transition: width 0.22s var(--ease), opacity 0.18s var(--ease); }
 @media (hover: hover) and (pointer: fine) {
-  .controls .pal { transition: width 0.22s var(--ease), opacity 0.18s var(--ease); }
   .controls .palettes:not(:hover):not(:focus-within) .pal { width: 0; opacity: 0; }
   [data-palette='indigo'] .controls .palettes:not(:hover):not(:focus-within) .pal[data-pal='indigo'],
   [data-palette='oxblood'] .controls .palettes:not(:hover):not(:focus-within) .pal[data-pal='oxblood'],
@@ -124,6 +122,17 @@ body {
     width: 28px;
     opacity: 1;
   }
+}
+@media (hover: none) {
+  .controls .palettes:not(.is-open) .pal { width: 0; opacity: 0; }
+  [data-palette='indigo'] .controls .palettes:not(.is-open) .pal[data-pal='indigo'],
+  [data-palette='oxblood'] .controls .palettes:not(.is-open) .pal[data-pal='oxblood'],
+  [data-palette='pine'] .controls .palettes:not(.is-open) .pal[data-pal='pine'],
+  [data-palette='ochre'] .controls .palettes:not(.is-open) .pal[data-pal='ochre'] {
+    width: var(--pal-w, 28px);
+    opacity: 1;
+  }
+  .controls .palettes.is-open .pal { width: var(--pal-w, 28px); opacity: 1; }
 }
 .pal::before {
   content: '';
@@ -551,10 +560,12 @@ body {
 @media (max-width: 768px) {
   .stage-root { padding: 16px 18px 0; }
 
-  .topbar { gap: 12px; }
-  .brand { font-size: 24px; }
-  .controls { display: none; } /* palette + theme move into popover */
-  .topbar-toggle { display: inline-flex; }
+  .topbar { gap: 10px; }
+  .brand { font-size: 22px; }
+  /* theme kit stays inline on mobile: collapsed to selected swatch, tap fans out */
+  .controls { --pal-w: 36px; padding: 4px 6px; gap: 8px; }
+  .controls .pal { width: var(--pal-w); height: 44px; }
+  .controls .theme-toggle { width: 38px; height: 38px; }
 
   .stage { flex-direction: column; gap: 0; padding-top: 12px; }
   .shelf { display: none; } /* desktop vertical spines hidden */
@@ -640,45 +651,4 @@ body {
     min-height: 1.2em;
   }
 
-  .topbar-toggle-wrap { display: block; position: relative; }
-  .topbar-toggle {
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink);
-    background: var(--panel);
-    border: 1px solid var(--faint);
-    border-radius: 8px;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .topbar-pop {
-    position: absolute;
-    top: 48px;
-    right: 0;
-    z-index: 60;
-    min-width: 184px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 14px;
-    background: var(--panel);
-    border: 1px solid var(--faint);
-    border-radius: 12px;
-    box-shadow: 0 16px 40px var(--shadow);
-  }
-  .pop-label {
-    margin: 0 0 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  /* touch targets inside the popover (44px minimum) */
-  .topbar-pop .palettes { gap: 4px; }
-  .topbar-pop .pal { width: 44px; height: 44px; }
-  .topbar-pop .pal::before { width: 16px; height: 16px; }
-  .topbar-pop .theme-toggle { width: 44px; height: 44px; border: 1px solid var(--faint); }
 }
