@@ -560,7 +560,7 @@ body {
 @media (max-width: 768px) {
   .stage-root { padding: 16px 18px 0; }
 
-  .topbar { gap: 10px; }
+  .topbar { gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--faint); }
   .brand { font-size: 22px; }
   /* theme kit stays inline on mobile: collapsed to selected swatch, tap fans out */
   .controls { --pal-w: 36px; padding: 4px 6px; gap: 8px; }
@@ -582,17 +582,34 @@ body {
   .panel { overflow-x: hidden; }
   .hero-h .nowrap { white-space: normal; }
 
-  .ghost-num { font-size: 110px; top: -8px; }
-  .home-meta { position: static; margin-top: 28px; flex-wrap: wrap; gap: 10px 16px; }
-  .about-grid { grid-template-columns: 1fr; gap: 26px; align-items: start; }
-  .skill-label { flex: 0 0 90px; }
-  .skill-set { gap: 4px 18px; }
-  .proj-main { flex-wrap: wrap; gap: 4px 16px; }
+  /* compressed vertical rhythm: every section fits a 667px phone, no panel scroll */
+  .ghost-num { font-size: 96px; top: -6px; }
+  .hero-h { font-size: clamp(38px, 11vw, 50px); }
+  .lead { font-size: 16px; margin-top: 20px; }
+  .hero-cta { margin-top: 22px; }
+  .home-meta { position: static; margin-top: 22px; flex-wrap: wrap; gap: 8px 14px; }
+  .section-h { font-size: 34px; margin: 10px 0 20px; }
+  .section-h.tight { margin: 10px 0 6px; }
+  .about-lead { font-size: 26px; }
+  .about-grid { grid-template-columns: 1fr; gap: 18px; align-items: start; }
+  .body-copy { font-size: 15px; line-height: 1.6; }
+  .tag-row { margin-top: 20px; }
+  .skill { font-size: 24px; }
+  .skill-row { padding: 12px 0; gap: 16px; }
+  .skill-label { flex: 0 0 84px; padding-top: 6px; }
+  .skill-set { gap: 4px 16px; }
+  .proj-name { font-size: 26px; }
+  .proj-row { padding: 14px 4px; }
+  .proj-main { flex-wrap: wrap; gap: 4px 14px; }
   .peek { display: none; }
-  .frames { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .sub-copy { font-size: 14px; margin-bottom: 16px; }
+  .frames { grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: none; }
+  .frame { padding: 6px 6px 20px; }
+  .frame figcaption { font-size: 9px; margin-top: 6px; }
   .frame:nth-child(3n + 1) { transform: rotate(var(--rot)); }
-  .connect-mail { font-size: clamp(17px, 5.4vw, 30px); overflow-wrap: anywhere; }
-  .connect-row { flex-wrap: wrap; gap: 18px 26px; }
+  .gallery-link { margin-top: 18px; }
+  .connect-mail { font-size: clamp(17px, 5.4vw, 30px); overflow-wrap: anywhere; margin: 6px 0 24px; }
+  .connect-row { flex-wrap: wrap; gap: 16px 24px; }
 
   .dock {
     display: flex;
