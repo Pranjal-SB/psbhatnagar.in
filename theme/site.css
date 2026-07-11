@@ -148,7 +148,32 @@ body {
   min-height: 0;
 }
 .shelf { flex: 0 0 auto; display: flex; gap: var(--gap-shelf); align-items: stretch; }
-.spread { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+.spread {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--faint);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px var(--shadow);
+  transition: background var(--dur-normal) var(--ease), border-color var(--dur-normal) var(--ease);
+}
+/* quiet per-section accent wash; position swap happens under the wipe, no transition needed */
+.spread::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(58vh 58vh at var(--wash-x, 82%) var(--wash-y, 8%), var(--soft), transparent 64%);
+  opacity: 0.55;
+}
+.spread[data-active='1'] { --wash-x: 88%; --wash-y: 78%; }
+.spread[data-active='2'] { --wash-x: 12%; --wash-y: 88%; }
+.spread[data-active='3'] { --wash-x: 90%; --wash-y: 20%; }
+.spread[data-active='4'] { --wash-x: 50%; --wash-y: 96%; }
+.spread[data-active='5'] { --wash-x: 10%; --wash-y: 12%; }
 .wipe {
   position: absolute;
   inset: 0;
@@ -227,9 +252,11 @@ body {
 .panel {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: clamp(28px, 4vw, 64px);
 }
 .eyebrow { font-weight: 500; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); margin: 0; }
 .section-h {
