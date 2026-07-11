@@ -49,8 +49,10 @@ for (const palette of PALETTES) {
   });
 }
 
-test('all four palette swatches render', async ({ page }) => {
+test('all four palette swatches render on hover', async ({ page }) => {
   await page.goto('/');
+  // palette kit rests collapsed to the selected swatch; hover fans it out
+  await page.locator('.controls .palettes').hover();
   for (const pal of PALETTES) {
     await expect(page.locator(`.pal[data-pal="${pal}"]`)).toBeVisible();
   }
