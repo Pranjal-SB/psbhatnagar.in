@@ -13,6 +13,7 @@ export interface GalleryItem {
   from: string;
   to: string;
   rotate: number;
+  src?: string; // real photo path under /public; designed texture placeholder when absent
 }
 export interface Links {
   github: string;

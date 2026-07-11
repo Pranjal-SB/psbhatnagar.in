@@ -7,7 +7,6 @@ import { TopBar } from '../nav/TopBar';
 import { Panel } from './Panel';
 import { Spines } from './Spines';
 import { Dock } from '../nav/Dock';
-import { Ambient } from './Ambient';
 import { EASE } from '../../lib/motion';
 import { Home } from '../sections/Home';
 import { About } from '../sections/About';
@@ -17,8 +16,8 @@ import { Gallery } from '../sections/Gallery';
 import { Connect } from '../sections/Connect';
 
 const SECTION_COMPONENTS = [Home, About, Skills, Projects, Gallery, Connect];
-const WIPE_HALF = 0.46; // seconds per sweep half
-const WIPE_HOLD = 0.3; // seconds the curtain sits fully covering (name readable)
+const WIPE_HALF = 0.38; // seconds per sweep half
+const WIPE_HOLD = 0.22; // seconds the curtain sits fully covering (name readable)
 
 function prefersReduced(): boolean {
   return (
@@ -37,6 +36,14 @@ export function Shelf() {
   const [scope, animate] = useAnimate();
   const running = useRef(false);
   const queued = useRef<number | null>(null);
+  const unmounted = useRef(false);
+
+  useEffect(() => {
+    unmounted.current = false;
+    return () => {
+      unmounted.current = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (active === shown) return;
@@ -45,39 +52,39 @@ export function Shelf() {
       return;
     }
 
-    let cancelled = false;
-
+    // An in-flight wipe must never be cancelled by `active` changing again —
+    // rapid changes are folded via `queued` and consumed when the wipe lands.
     const runWipe = async (from: number, to: number) => {
       if (prefersReduced()) {
         setShown(to);
         return;
       }
       running.current = true;
-      const dir = to > from ? 1 : -1;
-      const enterFrom = dir > 0 ? '106%' : '-106%';
-      const exitTo = dir > 0 ? '-106%' : '106%';
+      try {
+        const dir = to > from ? 1 : -1;
+        const enterFrom = dir > 0 ? '106%' : '-106%';
+        const exitTo = dir > 0 ? '-106%' : '106%';
 
-      // cover: leaving tab sweeps in across the spread
-      await animate(scope.current, { x: [enterFrom, '0%'] }, { duration: WIPE_HALF, ease: EASE.inOut });
-      if (cancelled) return;
-      setShown(to); // swap under the curtain
-      // reveal: hold briefly (name readable), then slide off the far side
-      await animate(
-        scope.current,
-        { x: ['0%', exitTo] },
-        { duration: WIPE_HALF, ease: EASE.inOut, delay: WIPE_HOLD },
-      );
-
-      running.current = false;
+        // cover: leaving tab sweeps in across the spread
+        await animate(scope.current, { x: [enterFrom, '0%'] }, { duration: WIPE_HALF, ease: EASE.inOut });
+        if (unmounted.current) return;
+        setShown(to); // swap under the curtain
+        // reveal: hold briefly (name readable), then slide off the far side
+        await animate(
+          scope.current,
+          { x: ['0%', exitTo] },
+          { duration: WIPE_HALF, ease: EASE.inOut, delay: WIPE_HOLD },
+        );
+      } finally {
+        running.current = false;
+      }
+      if (unmounted.current) return;
       const next = queued.current;
       queued.current = null;
-      if (!cancelled && next != null && next !== to) runWipe(to, next);
+      if (next != null && next !== to) runWipe(to, next);
     };
 
     runWipe(shown, active);
-    return () => {
-      cancelled = true;
-    };
   }, [active, shown, animate, scope]);
 
   const Active = SECTION_COMPONENTS[shown];
@@ -87,8 +94,7 @@ export function Shelf() {
       <div className="grain" aria-hidden />
       <TopBar />
       <div className="stage">
-        <main className="spread">
-          <Ambient active={shown} />
+        <main className="spread" data-active={shown}>
           <Panel key={SECTIONS[shown]}>
             <Active />
           </Panel>

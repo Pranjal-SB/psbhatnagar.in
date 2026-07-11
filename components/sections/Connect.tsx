@@ -2,30 +2,30 @@ import { siteData } from '../../data/site';
 
 export function Connect() {
   const { links } = siteData;
-  const entries: [string, string][] = [
+  const social: [string, string][] = [
     ['GitHub', links.github],
     ['Instagram', links.instagram],
-    ['Email', links.email],
     ['Resume', links.resume],
   ];
   return (
-    <div>
-      <div className="connect-card">
-        <p className="eyebrow">06 — connect</p>
-        <h2 className="section-h">say hello</h2>
-        <div className="connect-links">
-          {entries.map(([label, href]) => (
-            <a
-              className="connect-link"
-              key={label}
-              href={href}
-              target={href.startsWith('http') ? '_blank' : undefined}
-              rel="noreferrer"
-            >
-              {label}&nbsp;↗
-            </a>
-          ))}
-        </div>
+    <div className="panel-body">
+      <p className="eyebrow rise">06 — connect</p>
+      <h2 className="section-h rise rise-2">say hello</h2>
+      <a className="connect-mail rise rise-3" href={links.email}>
+        {links.email.replace('mailto:', '')}&nbsp;↗
+      </a>
+      <div className="connect-row rise rise-4">
+        {social.map(([label, href]) => (
+          <a
+            className="link-underline"
+            key={label}
+            href={href}
+            target={href.startsWith('http') ? '_blank' : undefined}
+            rel="noreferrer"
+          >
+            {label}&nbsp;↗
+          </a>
+        ))}
       </div>
     </div>
   );

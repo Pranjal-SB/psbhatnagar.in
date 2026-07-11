@@ -6,8 +6,11 @@ export function Home() {
   const { profile } = siteData;
   const setActive = useAppStore((s) => s.setActive);
   return (
-    <div className="panel-body">
-      <p className="eyebrow">01 — home</p>
+    <div className="panel-body panel-fill">
+      <span className="ghost-num" aria-hidden>
+        01
+      </span>
+      <p className="eyebrow rise">01 — home</p>
       <h1 className="hero-h">
         <span className="rise">builds tools that</span>
         <br />
@@ -35,6 +38,11 @@ export function Home() {
         <a className="link-underline" href={siteData.links.resume}>
           resume&nbsp;↗
         </a>
+      </div>
+      <div className="home-meta rise rise-5">
+        {profile.location.map((t) => (
+          <span key={t}>{t}</span>
+        ))}
       </div>
     </div>
   );

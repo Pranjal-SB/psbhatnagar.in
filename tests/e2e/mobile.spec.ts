@@ -1,4 +1,8 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, devices, type Page } from '@playwright/test';
+
+// real mobile emulation: touch events + (hover: none) media, which the
+// theme-kit fan-out logic depends on
+test.use({ ...devices['Pixel 7'] });
 
 async function seedMobile(page: Page) {
   await page.addInitScript(() => {
@@ -32,16 +36,24 @@ test('mobile: no horizontal overflow', async ({ page }) => {
   expect(overflow).toBe(false);
 });
 
-test('mobile popover toggles palette + theme controls', async ({ page }) => {
+test('mobile theme kit: tap fans out palettes, second tap picks', async ({ page }) => {
   await seedMobile(page);
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('.topbar-pop')).toHaveCount(0);
-  await page.locator('.topbar-toggle').click();
-  await expect(page.locator('.topbar-pop')).toBeVisible();
-  await expect(page.locator('.topbar-pop .pal[data-pal="pine"]')).toBeVisible();
-  await page.locator('.topbar-pop .pal[data-pal="pine"]').click();
+  const palettes = page.locator('.controls .palettes');
+  // collapsed at rest: only the selected swatch visible
+  await expect(page.locator('.controls .pal[data-pal="indigo"]')).toBeVisible();
+  await expect(page.locator('.controls .pal[data-pal="pine"]')).not.toBeVisible();
+  // first tap opens the fan without switching
+  await page.locator('.controls .pal[data-pal="indigo"]').tap();
+  await expect(palettes).toHaveClass(/is-open/);
+  await expect(page.locator('.controls .pal[data-pal="pine"]')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-palette', 'indigo');
+  // second tap picks and collapses
+  await page.locator('.controls .pal[data-pal="pine"]').tap();
   await expect(page.locator('html')).toHaveAttribute('data-palette', 'pine');
-  await page.keyboard.press('Escape');
-  await expect(page.locator('.topbar-pop')).toHaveCount(0);
+  await expect(palettes).not.toHaveClass(/is-open/);
+  // theme toggle is always one tap away
+  await page.locator('.controls .theme-toggle').tap();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });

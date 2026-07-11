@@ -1,7 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppStore, SECTIONS } from '../../store/useAppStore';
-import { SPRING, DURATION, useReducedMotionSafe } from '../../lib/motion';
+import { SPRING, useReducedMotionSafe } from '../../lib/motion';
 
 export function Dock() {
   const active = useAppStore((s) => s.active);
@@ -39,7 +39,7 @@ export function Dock() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0 : DURATION.fast }}
+            transition={{ duration: reduced ? 0 : 0.28 }}
           >
             {SECTIONS[active]}
           </motion.span>

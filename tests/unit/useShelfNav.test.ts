@@ -15,16 +15,16 @@ describe('stepFromWheel', () => {
 });
 
 describe('stepFromSwipe', () => {
-  it('swipe up (negative dy) past threshold → +1 (next)', () => {
-    expect(stepFromSwipe({ dx: 5, dy: -60 }, 40)).toBe(1);
+  it('swipe left (negative dx) past threshold → +1 (next, matches wipe direction)', () => {
+    expect(stepFromSwipe({ dx: -60, dy: 5 }, 40)).toBe(1);
   });
-  it('swipe down (positive dy) past threshold → -1 (prev)', () => {
-    expect(stepFromSwipe({ dx: -3, dy: 60 }, 40)).toBe(-1);
+  it('swipe right (positive dx) past threshold → -1 (prev)', () => {
+    expect(stepFromSwipe({ dx: 60, dy: -3 }, 40)).toBe(-1);
   });
-  it('sub-threshold vertical → 0', () => {
-    expect(stepFromSwipe({ dx: 0, dy: -20 }, 40)).toBe(0);
+  it('sub-threshold horizontal → 0', () => {
+    expect(stepFromSwipe({ dx: -20, dy: 0 }, 40)).toBe(0);
   });
-  it('horizontal-dominant drag → 0 (leave system back-swipe alone)', () => {
-    expect(stepFromSwipe({ dx: -120, dy: -10 }, 40)).toBe(0);
+  it('vertical-dominant drag → 0 (leave content scrolling alone)', () => {
+    expect(stepFromSwipe({ dx: -10, dy: -120 }, 40)).toBe(0);
   });
 });
