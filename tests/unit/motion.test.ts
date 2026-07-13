@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { EASE, SPRING } from '../../lib/motion';
+import { EASE, SPRING } from '../../src/lib/motion';
 
 describe('motion tokens', () => {
   it('eases are 4-point cubic beziers', () => {

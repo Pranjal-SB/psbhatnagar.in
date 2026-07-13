@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { siteData } from '../../data/site';
+import { siteData } from '../../src/data/site';
 
 describe('project data model', () => {
   it('every project has a non-empty slug', () => {

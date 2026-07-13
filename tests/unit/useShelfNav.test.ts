@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { stepFromWheel, stepFromSwipe } from '../../components/nav/useShelfNav';
+import { stepFromWheel, stepFromSwipe } from '../../src/components/nav/useShelfNav';
 
 describe('stepFromWheel', () => {
   it('returns +1 when dominant axis exceeds threshold', () => {
