@@ -1,7 +1,6 @@
 /AGENTS.md
 /CLAUDE.md
 /README.md
-/TODO.md
 docs/
 old/
 .claude/
@@ -14,6 +13,7 @@ dist/
 .vite/
 test-results/
 playwright-report/
+coverage/
 .playwright-mcp/
 .env
 .env.*

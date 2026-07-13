@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { PALETTES } from '../../theme/palettes';
+import { PALETTES } from '../../src/theme/palettes';
 
 describe('palettes', () => {
   it('exposes all four palettes with swatches', () => {

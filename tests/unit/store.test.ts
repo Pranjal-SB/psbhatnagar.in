@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useAppStore, clampIndex, SECTIONS } from '../../store/useAppStore';
+import { useAppStore, clampIndex, SECTIONS } from '../../src/store/useAppStore';
 
 const reset = () =>
   useAppStore.setState({ active: 0, palette: 'indigo', theme: 'light' });

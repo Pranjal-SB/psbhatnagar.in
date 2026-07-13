@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import '../../theme/case-study.css';
+import './case-study.css';
 
 export default function ProjectLayout({ children }: { children: React.ReactNode }) {
   return (
