@@ -16,15 +16,16 @@ export interface GalleryItem {
   src?: string; // real photo path under /public; designed texture placeholder when absent
 }
 export interface Links {
-  github: string;
-  instagram: string;
   email: string;
   resume: string;
+  instagram: string;
+  /** rendered in order on the connect section */
+  social: { label: string; href: string }[];
 }
 
 export interface SiteData {
-  profile: { name: string; role: string; blurb: string; location: string[] };
-  about: { lead: string; body: string; tags: string[] };
+  profile: { name: string; role: string; blurb: string };
+  about: { lead: string; body: string };
   skills: SkillGroup[];
   projects: Project[];
   gallery: GalleryItem[];
@@ -33,34 +34,32 @@ export interface SiteData {
 
 export const siteData: SiteData = {
   profile: {
-    name: 'Pranjal Bhatnagar',
+    name: 'Pranjal Swarup Bhatnagar',
     role: 'software developer',
     blurb:
-      'Pranjal Bhatnagar — software developer studying CSE & cybersecurity at SRMIST. Takes pictures & watches too many movies.',
-    location: ['based in chennai', '· srmist', '· cse + cybersecurity'],
+      'Software developer, CSE & cybersecurity at SRMIST. I take pictures and watch too many movies.',
   },
   about: {
     lead: 'I like making things that feel good to use, not just work.',
-    body: 'Design-dev hybrid — happiest in the seam between how a thing looks and how it behaves. Learning where craft and code meet, one small tool at a time.',
-    tags: ['based in chennai', '· srmist', '· cse + cybersecurity'],
+    body: 'Been obsessed with computers since I was a kid, taking them apart, breaking them, putting them back. Now I build the things that run on them.',
   },
   skills: [
-    { label: 'languages', items: ['TypeScript', 'Python', 'C', 'SQL'] },
-    { label: 'frameworks', items: ['React', 'Next.js', 'Node', 'Tailwind'] },
-    { label: 'tools', items: ['Figma', 'Git', 'Linux', 'Affinity'] },
+    { label: 'languages', items: ['TypeScript', 'Python', 'SQL', 'C', 'Java'] },
+    { label: 'frameworks', items: ['Next.js', 'React', 'FastAPI', 'Node', 'Tailwind'] },
+    { label: 'infra', items: ['Postgres', 'Redis', 'Docker', 'Bun', 'Git', 'Linux'] },
   ],
   projects: [
     {
       name: 'examdb',
-      blurb: 'past papers, organised — for last-minute studiers',
+      blurb: 'every competitive exam date, kept fresh by scrapers',
       slug: 'examdb',
-      links: { live: 'https://examdb.vercel.app' },
+      links: { live: 'https://examdb.org' },
     },
     {
       name: 'outn',
-      blurb: 'on GitHub — small tool, honest scope',
+      blurb: 'machine learning that names the Pokémon in a picture',
       slug: 'outn',
-      links: { repo: 'https://github.com' },
+      links: { repo: 'https://github.com/Pranjal-SB/outn' },
     },
   ],
   gallery: [
@@ -71,9 +70,16 @@ export const siteData: SiteData = {
     { caption: 'psb · 05', from: '#b79bd6', to: '#6a4d9e', rotate: -2 },
   ],
   links: {
-    github: 'https://github.com',
-    instagram: 'https://instagram.com/psbhatnagar.in',
-    email: 'mailto:hello@psbhatnagar.in',
+    email: 'mailto:psbhatnagar.in@gmail.com',
     resume: '/resume.pdf',
+    instagram: 'https://www.instagram.com/psbhatnagarin/',
+    social: [
+      { label: 'GitHub', href: 'https://github.com/Pranjal-SB' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pranjalsb/' },
+      { label: 'Blog', href: 'https://psb.bearblog.dev' },
+      { label: 'Instagram', href: 'https://www.instagram.com/psbhatnagarin/' },
+      { label: 'Chess', href: 'https://www.chess.com/member/psbhatnagar' },
+      { label: 'Resume', href: '/resume.pdf' },
+    ],
   },
 };

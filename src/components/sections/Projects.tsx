@@ -5,7 +5,7 @@ export function Projects() {
   const { projects } = siteData;
   return (
     <div>
-      <p className="eyebrow rise">04 — projects</p>
+      <p className="eyebrow rise">04 - projects</p>
       <h2 className="section-h rise rise-2">built &amp; shipped</h2>
       <div className="proj-list rise rise-3">
         {projects.map((p) => (
@@ -15,7 +15,6 @@ export function Projects() {
               <span className="proj-blurb">{p.blurb}</span>
             </span>
             <span className="proj-cta">read ↗</span>
-            <span className="peek peek-a" aria-hidden />
           </Link>
         ))}
       </div>

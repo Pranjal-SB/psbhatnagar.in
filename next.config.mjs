@@ -13,6 +13,8 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Pin the tracing root; a stray lockfile above this dir confuses Next's inference.
+  outputFileTracingRoot: import.meta.dirname,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];

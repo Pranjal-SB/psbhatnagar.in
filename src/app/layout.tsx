@@ -1,12 +1,18 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import { siteData } from '../data/site';
 import { ThemeProvider } from '../theme/ThemeProvider';
 import { NO_FLASH_SCRIPT } from '../theme/no-flash';
 
+const { name: title, blurb: description } = siteData.profile;
+
 export const metadata: Metadata = {
-  title: 'Pranjal Bhatnagar',
-  description: 'software developer',
+  metadataBase: new URL('https://psbhatnagar.in'),
+  title,
+  description,
+  openGraph: { title, description, url: '/', siteName: title, type: 'website' },
+  twitter: { card: 'summary_large_image', title, description },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

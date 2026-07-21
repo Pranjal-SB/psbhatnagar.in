@@ -13,7 +13,7 @@ test('rapid section changes mid-wipe settle on the last target', async ({ page }
   await seed(page);
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('.eyebrow')).toHaveText('01 — home');
+  await expect(page.locator('.eyebrow')).toHaveText('01 - home');
 
   // fire the second and third press while the first wipe is still running
   await page.keyboard.press('3');
@@ -22,9 +22,9 @@ test('rapid section changes mid-wipe settle on the last target', async ({ page }
   await page.waitForTimeout(150);
   await page.keyboard.press('2');
 
-  await expect(page.locator('.eyebrow')).toHaveText('02 — about', { timeout: 8000 });
+  await expect(page.locator('.eyebrow')).toHaveText('02 - about', { timeout: 8000 });
 
   // nav must still be alive afterwards (regression: wipe used to deadlock)
   await page.keyboard.press('6');
-  await expect(page.locator('.eyebrow')).toHaveText('06 — connect', { timeout: 8000 });
+  await expect(page.locator('.eyebrow')).toHaveText('06 - connect', { timeout: 8000 });
 });
