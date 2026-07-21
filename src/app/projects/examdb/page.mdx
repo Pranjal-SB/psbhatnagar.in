@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'examdb — case study',
+  title: 'examdb - case study',
   description: 'A scraper-fed database of Indian entrance-exam dates with confidence-scored freshness.',
 };
 
@@ -13,12 +13,12 @@ examdb answers one question in five seconds: *is my exam's date out, and when
 does it close?*
 
 <div className="cs-links">
-  <a className="cs-a" href="https://examdb.vercel.app">live ↗</a>
+  <a className="cs-a" href="https://examdb.org">live ↗</a>
 </div>
 
 ## the problem
 
-Indian exam aspirants — JEE, NEET, CET, GATE — check under deadline stress,
+Indian exam aspirants (JEE, NEET, CET, GATE) check under deadline stress,
 mostly on mobile. The dates they need are facts, but every source degrades them:
 government portals hide them inside PDFs, aggregators wrap them in ad walls and
 lead-capture forms. There was no place that treated the dates themselves as the
@@ -26,7 +26,7 @@ product.
 
 ## approach
 
-The scrapers are the product. Everything else — API, pipeline, site — is
+The scrapers are the product. Everything else, API, pipeline and site, is
 scaffolding around getting a date onto the page fresh and trustworthy.
 
 - **Dates are the product.** Every surface optimises for scanning dates and
@@ -49,13 +49,13 @@ score, so a date backed by an official portal outranks a date seen only in news.
 
 ## stack
 
-- **API** — FastAPI + SQLAlchemy (async) + Postgres.
-- **Pipeline** — `pipeline/runner.py`, scheduled daily by GitHub Actions.
-- **Frontend** — Next.js.
-- **Monitoring** — Prometheus metrics at `/metrics`.
+- **API**: FastAPI + SQLAlchemy (async) + Postgres.
+- **Pipeline**: `pipeline/runner.py`, scheduled daily by GitHub Actions.
+- **Frontend**: Next.js.
+- **Monitoring**: Prometheus metrics at `/metrics`.
 
 ## what it taught me
 
 Coverage and drift are the real work: every exam needs a working source, and
 parsers rot as government sites change under them. The interesting engineering
-wasn't the framework — it was making stale data visibly stale.
+wasn't the framework, it was making stale data visibly stale.

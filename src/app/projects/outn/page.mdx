@@ -1,15 +1,32 @@
 export const metadata = {
-  title: 'outn — case study',
-  description: 'A small tool with honest scope.',
+  title: 'outn - case study',
+  description: 'Machine learning that names the Pokémon in a picture.',
 };
 
 # outn
 
-<p className="cs-meta">small tool · honest scope</p>
+<p className="cs-meta">machine learning · image recognition · python</p>
 
-A small utility, kept deliberately narrow. Write-up coming — for now the code
-tells the story.
+Point it at a picture of a Pokémon and it tells you which one. An image
+classifier trained on Pokémon sprites and screenshots, wrapped in the smallest
+interface that gets an answer out.
 
 <div className="cs-links">
-  <a className="cs-a" href="https://github.com">repo ↗</a>
+  <a className="cs-a" href="https://github.com/Pranjal-SB/outn">repo ↗</a>
 </div>
+
+## the problem
+
+Pokédex apps make you already know the name. Reverse image search gives you
+fan-art and merch listings. The gap is narrow and specific: you have a picture,
+you want a name, nothing else.
+
+## approach
+
+One model, one job. No app shell, no accounts, no gallery. The scope is the
+feature: the write-up is short because the project is.
+
+## what it taught me
+
+Data beats architecture at this scale. Most of the accuracy came from cleaning
+and balancing the training set, not from a bigger network.

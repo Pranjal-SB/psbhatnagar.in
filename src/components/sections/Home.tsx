@@ -10,13 +10,13 @@ export function Home() {
       <span className="ghost-num" aria-hidden>
         01
       </span>
-      <p className="eyebrow rise">01 — home</p>
+      <p className="eyebrow rise">01 - home</p>
       <h1 className="hero-h">
-        <span className="rise">builds tools that</span>
+        <span className="rise">Hi, I&rsquo;m</span>
         <br />
-        <span className="rise rise-2 nowrap">
+        <span className="rise rise-2">
           <span className="squiggle-word">
-            <span className="squiggle-text">feel good</span>
+            <span className="squiggle-text">Pranjal</span>
             <svg className="word-squiggle" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden>
               <path
                 d="M4 15 C 60 6, 120 22, 175 12 S 270 6, 296 14"
@@ -27,7 +27,7 @@ export function Home() {
               />
             </svg>
           </span>{' '}
-          to use.
+          Swarup Bhatnagar
         </span>
       </h1>
       <p className="lead rise rise-3">{profile.blurb}</p>
@@ -38,11 +38,6 @@ export function Home() {
         <a className="link-underline" href={siteData.links.resume}>
           resume&nbsp;↗
         </a>
-      </div>
-      <div className="home-meta rise rise-5">
-        {profile.location.map((t) => (
-          <span key={t}>{t}</span>
-        ))}
       </div>
     </div>
   );

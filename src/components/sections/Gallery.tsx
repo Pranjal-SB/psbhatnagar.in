@@ -4,9 +4,9 @@ export function Gallery() {
   const { gallery } = siteData;
   return (
     <div>
-      <p className="eyebrow rise">05 — gallery</p>
+      <p className="eyebrow rise">05 - gallery</p>
       <h2 className="section-h tight rise rise-2">through my lens</h2>
-      <p className="sub-copy rise rise-3">a few frames — film &amp; digital.</p>
+      <p className="sub-copy rise rise-3">a few frames, film &amp; digital.</p>
       <div className="frames rise rise-4">
         {gallery.map((g) => (
           <figure
