@@ -34,7 +34,19 @@ export const useAppStore = create<AppState>()(
     {
       name: 'psb.state',
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => ({ active: s.active, palette: s.palette, theme: s.theme }),
+      // Only real preferences persist. `active` is UI position — the URL hash
+      // owns it (see useHashSection), so it must never come back from storage.
+      partialize: (s) => ({ palette: s.palette, theme: s.theme }),
+      // Older payloads still hold an `active`; drop it on rehydrate rather than
+      // bumping `version`. No version bump means no storage rewrite, so an
+      // older build reads this same payload fine (clean rollback), and a stale
+      // index can never win over the URL. Spreading `persisted` as-is also
+      // can't clobber a default with `undefined` — absent keys stay absent.
+      merge: (persisted, current) => ({
+        ...current,
+        ...(persisted as Partial<AppState>),
+        active: current.active,
+      }),
     },
   ),
 );
