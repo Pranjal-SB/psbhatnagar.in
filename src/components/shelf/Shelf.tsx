@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAnimate } from 'motion/react';
 import { useAppStore, SECTIONS } from '../../store/useAppStore';
 import { useShelfNav } from '../nav/useShelfNav';
+import { useHashSection } from '../nav/useHashSection';
 import { TopBar } from '../nav/TopBar';
 import { Panel } from './Panel';
 import { Spines } from './Spines';
@@ -33,6 +34,16 @@ export function Shelf() {
   // `shown` is the panel currently painted; it lags `active` until the
   // wipe curtain fully covers the content, so the swap happens off-screen.
   const [shown, setShown] = useState(active);
+  // The section the URL resolved to at mount, pending its first paint. zustand
+  // commits `active` via useSyncExternalStore, separately from this `setShown`,
+  // so there is an intermediate commit where active is the deep-linked section
+  // and `shown` is still home — that commit must snap, not wipe. Matching on
+  // the index (rather than a boolean flag) is what makes it stale-commit-proof.
+  const initialTarget = useRef<number | null>(null);
+  useHashSection((i) => {
+    initialTarget.current = i;
+    setShown(i);
+  });
   const [scope, animate] = useAnimate();
   const running = useRef(false);
   const queued = useRef<number | null>(null);
@@ -47,6 +58,14 @@ export function Shelf() {
 
   useEffect(() => {
     if (active === shown) return;
+    // Consume the URL's initial target on the first real divergence, so a later
+    // navigation back to that same index still animates normally.
+    const initial = initialTarget.current;
+    initialTarget.current = null;
+    if (initial !== null && active === initial) {
+      setShown(active); // deep link lands directly — no wipe
+      return;
+    }
     if (running.current) {
       queued.current = active; // fold rapid changes into the in-flight wipe
       return;

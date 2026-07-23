@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useAppStore, clampIndex, SECTIONS } from '../../src/store/useAppStore';
 
+type AppSnapshot = { active: number; palette: string; theme: string };
+
 const reset = () =>
   useAppStore.setState({ active: 0, palette: 'indigo', theme: 'light' });
 
@@ -25,6 +27,34 @@ describe('store', () => {
     useAppStore.getState().setPalette('oxblood');
     expect(useAppStore.getState().theme).toBe('dark');
     expect(useAppStore.getState().palette).toBe('oxblood');
+  });
+
+  it('does not persist active — site reopens on home', () => {
+    useAppStore.getState().setActive(4);
+    useAppStore.getState().setPalette('pine');
+
+    const stored = JSON.parse(localStorage.getItem('psb.state') ?? '{}');
+    expect(stored.state).not.toHaveProperty('active');
+    expect(stored.state.palette).toBe('pine');
+  });
+
+  it('merge ignores a stale persisted active — the URL owns the section', () => {
+    const { merge } = useAppStore.persist.getOptions();
+    const out = merge?.(
+      { active: 4, palette: 'pine', theme: 'dark' },
+      useAppStore.getState(),
+    ) as AppSnapshot;
+    expect(out.active).toBe(0);
+    expect(out.palette).toBe('pine');
+    expect(out.theme).toBe('dark');
+  });
+
+  it('merge never clobbers a default with undefined', () => {
+    // A payload missing palette/theme must leave the defaults standing —
+    // ThemeProvider would stringify undefined into data-palette="undefined".
+    const { merge } = useAppStore.persist.getOptions();
+    expect((merge?.({ active: 4 }, useAppStore.getState()) as AppSnapshot).palette).toBe('indigo');
+    expect((merge?.({}, useAppStore.getState()) as AppSnapshot).theme).toBe('light');
   });
 
   it('toggleTheme flips light/dark', () => {
