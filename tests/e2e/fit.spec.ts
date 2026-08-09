@@ -54,6 +54,35 @@ for (const [orientation, size] of [
   });
 }
 
+for (const [orientation, size] of [
+  ['portrait', PORTRAIT],
+  ['landscape', LANDSCAPE],
+] as const) {
+  test(`${orientation}: every dock tab is named at rest, untruncated and tappable`, async ({
+    page,
+  }) => {
+    await open(page, size);
+
+    const tabs = await page.evaluate(() =>
+      [...document.querySelectorAll('.dock-tab')].map((tab) => {
+        const label = tab.querySelector('.dock-name') as HTMLElement | null;
+        const box = tab.getBoundingClientRect();
+        return {
+          name: label?.textContent ?? null,
+          // scrollWidth beating clientWidth is the tell for an ellipsis/clip
+          clipped: label ? label.scrollWidth > label.clientWidth + 0.5 : true,
+          height: Math.round(box.height),
+        };
+      }),
+    );
+
+    expect(tabs.map((t) => t.name)).toEqual(SECTIONS);
+    expect(tabs.filter((t) => t.clipped)).toEqual([]);
+    // 44px is the touch floor; the labels must not have squeezed the tabs under it
+    expect(Math.min(...tabs.map((t) => t.height))).toBeGreaterThanOrEqual(44);
+  });
+}
+
 test('gallery frames stay legible on a phone (2 columns, not 3)', async ({ page }) => {
   await open(page, PORTRAIT);
   await page.locator('.dock-tab').nth(4).click();
