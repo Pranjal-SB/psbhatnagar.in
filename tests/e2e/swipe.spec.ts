@@ -94,6 +94,19 @@ test('a vertical drag moves the panel with the finger before it commits', async 
   await expect(page.locator('.eyebrow')).toHaveText('01 - home');
 });
 
+test('the page claims the down-swipe from pull-to-refresh', async ({ page }) => {
+  await open(page);
+  // Chrome/Android reads a down-swipe from the top as pull-to-refresh, which is
+  // the same gesture as "previous section". The touch listeners are passive, so
+  // overscroll-behavior is the only lever. The refresh itself can't be driven in
+  // headless Chromium, so assert the property that suppresses it.
+  const behaviour = await page.evaluate(() => ({
+    html: getComputedStyle(document.documentElement).overscrollBehaviorY,
+    body: getComputedStyle(document.body).overscrollBehaviorY,
+  }));
+  expect(behaviour).toEqual({ html: 'none', body: 'none' });
+});
+
 test('swipe sweeps the curtain vertically; the dock sweeps it sideways', async ({ page }) => {
   await open(page);
 
