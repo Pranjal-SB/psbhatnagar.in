@@ -14,6 +14,17 @@
 @font-face { font-family: 'Space Mono'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/SpaceMono-Bold.ttf') format('truetype'); }
 
 /* ---------- global ---------- */
+/* Swiping down goes to the previous section, which is also the gesture Chrome
+   on Android reads as pull-to-refresh. The touch listeners are passive (they
+   must be, to stay off the main thread), so preventDefault isn't available —
+   this is the only way to claim the gesture. Set on both html and body: on body
+   alone it only propagates to the viewport while html leaves it unset, which is
+   too easy to break later. Nothing on the page scrolls anyway — .stage-root is
+   100dvh with overflow hidden — so no scrolling is lost. */
+html,
+body {
+  overscroll-behavior: none;
+}
 body {
   font-family: 'General Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
