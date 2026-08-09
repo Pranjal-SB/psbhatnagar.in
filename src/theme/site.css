@@ -516,8 +516,11 @@ body {
 .connect-mail:hover { color: var(--accent); }
 .connect-row { display: flex; gap: 30px; }
 
-/* ---------- mobile (<=768px) ---------- */
-@media (max-width: 768px) {
+/* ---------- mobile ----------
+   Phones in portrait, plus large phones in landscape — a Pixel 7 on its side is
+   915px wide but only 412px tall, so a width-only query left it on the desktop
+   shelf at 412px of height. Kept in sync with MOBILE_MEDIA in nav/useShelfNav.ts. */
+@media (max-width: 768px), (orientation: landscape) and (max-height: 500px) {
   .stage-root { padding: 16px 18px 0; }
 
   .topbar { gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--faint); }
@@ -540,6 +543,9 @@ body {
   /* centers short sections, top-aligns + scrolls tall ones */
   .panel > * { margin-block: auto; }
   .panel { overflow-x: hidden; }
+  /* live swipe feedback: useShelfNav sets --drag-y while a vertical drag is in
+     flight, so the panel tracks the finger before the gesture commits */
+  .panel { transform: translateY(var(--drag-y, 0)); will-change: transform; }
 
   /* compressed vertical rhythm: every section fits a 667px phone, no panel scroll */
   .ghost-num { font-size: 96px; top: -6px; }
@@ -552,16 +558,22 @@ body {
   .about-grid { grid-template-columns: 1fr; gap: 18px; align-items: start; }
   .body-copy { font-size: 15px; line-height: 1.6; }
   .skill { font-size: 24px; }
-  .skill-row { padding: 12px 0; gap: 16px; }
+  .skill-row { padding: 11px 0; gap: 16px; }
   .skill-label { flex: 0 0 84px; padding-top: 6px; }
   .skill-set { gap: 4px 16px; }
   .proj-name { font-size: 26px; }
   .proj-row { padding: 14px 4px; }
   .proj-main { flex-wrap: wrap; gap: 4px 14px; }
   .sub-copy { font-size: 14px; margin-bottom: 16px; }
-  .frames { grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: none; }
-  .frame { padding: 6px 6px 20px; }
-  .frame figcaption { font-size: 9px; margin-top: 6px; }
+  /* 2 cols, not 3: at 375px a 3-col frame is ~95px wide and forced its caption
+     down to 9px. Two columns keep the frame readable, but 5 frames then need a
+     third row the 468px panel doesn't have — so phones show a 2x2 and the
+     "more on instagram" link carries the rest. Index-based, so it still holds
+     when real photos grow the set. */
+  .frames { grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: none; }
+  .frame { padding: 6px 6px 16px; }
+  .frame:nth-child(n + 5) { display: none; }
+  .frame figcaption { font-size: 11px; margin-top: 5px; }
   .frame:nth-child(3n + 1) { transform: rotate(var(--rot)); }
   .gallery-link { margin-top: 18px; }
   .connect-mail { font-size: clamp(17px, 5.4vw, 30px); overflow-wrap: anywhere; margin: 6px 0 24px; }
@@ -624,4 +636,64 @@ body {
     min-height: 1.2em;
   }
 
+}
+
+/* ---------- phone landscape (short viewport) ----------
+   667x375 leaves the panel 176px tall once the portrait chrome is subtracted —
+   every section overflowed. Keyed on max-height rather than orientation alone so
+   a short desktop window doesn't get phone rules. Two moves: give height back by
+   shrinking the chrome, then compress the type into what's left. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .stage-root { padding: 8px 20px 0; }
+  .stage { padding-top: 8px; }
+
+  /* chrome: topbar ~110px -> ~56px, dock ~90px -> ~48px */
+  .topbar { padding-bottom: 6px; }
+  .brand { font-size: 17px; }
+  .brand-squiggle { bottom: -4px; height: 6px; }
+  .controls { --pal-w: 30px; padding: 2px 6px; gap: 6px; }
+  .controls .pal { height: 34px; }
+  .controls .theme-toggle { width: 32px; height: 32px; }
+
+  .spread { margin-bottom: calc(58px + env(safe-area-inset-bottom)); }
+  .panel { padding: 12px 16px; }
+  .dock {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 16px calc(4px + env(safe-area-inset-bottom));
+  }
+  .dock-tabs { flex: 1; }
+  .dock-tab { min-height: 40px; }
+  /* label moves inline beside the ticks instead of costing a second row */
+  .dock-label { flex: 0 0 auto; font-size: 13px; text-align: right; }
+
+  /* type: compressed to fit ~266px of panel */
+  .ghost-num { font-size: 64px; top: -4px; }
+  .eyebrow { font-size: 10px; letter-spacing: 0.14em; }
+  .hero-h { font-size: clamp(26px, 5.2vw, 34px); }
+  .lead { font-size: 14px; margin-top: 10px; }
+  .hero-cta { margin-top: 12px; }
+  .section-h { font-size: 26px; margin: 6px 0 10px; }
+  .section-h.tight { margin: 6px 0 4px; }
+  .about-lead { font-size: 18px; }
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+  .body-copy { font-size: 13px; line-height: 1.45; }
+  .skill { font-size: 17px; }
+  .skill-row { padding: 5px 0; gap: 12px; }
+  .skill-label { flex: 0 0 76px; font-size: 10px; padding-top: 3px; }
+  .skill-set { gap: 2px 14px; }
+  .proj-name { font-size: 19px; }
+  .proj-blurb { font-size: 13px; }
+  .proj-row { padding: 8px 4px; }
+  .sub-copy { font-size: 13px; margin-bottom: 8px; }
+
+  /* landscape is wide and short: one row of 5 frames instead of a 2x2 */
+  .frames { grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .frame { padding: 4px 4px 12px; }
+  .frame:nth-child(n + 5) { display: revert; }
+  .frame figcaption { font-size: 10px; margin-top: 3px; }
+  .gallery-link { margin-top: 10px; }
+  .connect-mail { font-size: clamp(16px, 3.4vw, 24px); margin: 4px 0 12px; }
+  .connect-row { gap: 8px 22px; }
 }

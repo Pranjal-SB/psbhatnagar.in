@@ -10,11 +10,17 @@ export function clampIndex(i: number): number {
   return Math.max(0, Math.min(MAX, Math.trunc(i)));
 }
 
+// Which way the wipe curtain sweeps. A swipe-driven change sweeps along the
+// finger ('y'); keys, the dock and deep links keep the book-page sideways
+// sweep ('x'). Set alongside `active` so the wipe reads a consistent pair.
+export type WipeAxis = 'x' | 'y';
+
 interface AppState {
   active: number;
+  wipeAxis: WipeAxis;
   palette: PaletteName;
   theme: ThemeName;
-  setActive: (i: number) => void;
+  setActive: (i: number, axis?: WipeAxis) => void;
   setPalette: (p: PaletteName) => void;
   setTheme: (t: ThemeName) => void;
   toggleTheme: () => void;
@@ -24,9 +30,10 @@ export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       active: 0,
+      wipeAxis: 'x',
       palette: 'indigo',
       theme: 'light',
-      setActive: (i) => set({ active: clampIndex(i) }),
+      setActive: (i, axis = 'x') => set({ active: clampIndex(i), wipeAxis: axis }),
       setPalette: (palette) => set({ palette }), // theme untouched — orthogonal
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),

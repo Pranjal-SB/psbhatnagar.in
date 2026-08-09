@@ -9,6 +9,24 @@ async function seed(page: Page) {
   });
 }
 
+test('the curtain names the section being entered, not the one being left', async ({ page }) => {
+  await seed(page);
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('.eyebrow')).toHaveText('01 - home');
+
+  await page.keyboard.press('4');
+  await page.waitForTimeout(100); // mid cover sweep (WIPE_HALF is 280ms)
+  // single synchronous sample — no retry, or the settled state would mask it
+  const midFlight = await page.evaluate(() => ({
+    name: document.querySelector('.wipe-name')?.textContent,
+    num: document.querySelector('.wipe-num')?.textContent,
+  }));
+  expect(midFlight).toEqual({ name: 'projects', num: '04' });
+
+  await expect(page.locator('.eyebrow')).toHaveText('04 - projects', { timeout: 8000 });
+});
+
 test('rapid section changes mid-wipe settle on the last target', async ({ page }) => {
   await seed(page);
   await page.goto('/');
