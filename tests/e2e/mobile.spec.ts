@@ -20,10 +20,10 @@ test('mobile dock is visible and switches sections', async ({ page }) => {
   await page.goto('/');
   await page.waitForLoadState('networkidle');
   await expect(page.locator('nav.dock')).toBeVisible();
-  await expect(page.locator('.dock-label')).toHaveText('home');
-  await page.locator('.dock-tab', { hasText: '3' }).click();
+  await expect(page.locator('.dock-tab.is-active .dock-name')).toHaveText('home');
+  await page.locator('.dock-tab').nth(2).click();
   await expect(page.locator('.dock-tab.is-active .dock-num')).toHaveText('3');
-  await expect(page.locator('.dock-label')).toHaveText('skills');
+  await expect(page.locator('.dock-tab.is-active .dock-name')).toHaveText('skills');
 });
 
 test('mobile: no horizontal overflow', async ({ page }) => {
