@@ -22,6 +22,16 @@ describe('store', () => {
     expect(useAppStore.getState().active).toBe(SECTIONS.length - 1);
   });
 
+  it('setActive records the wipe axis, defaulting to the sideways sweep', () => {
+    useAppStore.getState().setActive(2);
+    expect(useAppStore.getState().wipeAxis).toBe('x');
+    useAppStore.getState().setActive(3, 'y');
+    expect(useAppStore.getState().wipeAxis).toBe('y');
+    // a later non-swipe change must put the sweep back
+    useAppStore.getState().setActive(1);
+    expect(useAppStore.getState().wipeAxis).toBe('x');
+  });
+
   it('palette switch preserves theme (orthogonal)', () => {
     useAppStore.getState().setTheme('dark');
     useAppStore.getState().setPalette('oxblood');

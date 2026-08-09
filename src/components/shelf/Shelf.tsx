@@ -17,8 +17,10 @@ import { Gallery } from '../sections/Gallery';
 import { Connect } from '../sections/Connect';
 
 const SECTION_COMPONENTS = [Home, About, Skills, Projects, Gallery, Connect];
-const WIPE_HALF = 0.38; // seconds per sweep half
-const WIPE_HOLD = 0.22; // seconds the curtain sits fully covering (name readable)
+// The curtain names the section being entered from the first frame, so the name
+// is already readable during the cover sweep. That removed the hold beat the
+// wipe used to need (0.38 + 0.22 + 0.38 = 0.98s) and let the halves tighten.
+const WIPE_HALF = 0.28; // seconds per sweep half
 
 function prefersReduced(): boolean {
   return (
@@ -34,6 +36,9 @@ export function Shelf() {
   // `shown` is the panel currently painted; it lags `active` until the
   // wipe curtain fully covers the content, so the swap happens off-screen.
   const [shown, setShown] = useState(active);
+  // What the curtain reads. Tracked separately from `shown` because the curtain
+  // must name the destination while `shown` is still the section being left.
+  const [curtain, setCurtain] = useState(active);
   // The section the URL resolved to at mount, pending its first paint. zustand
   // commits `active` via useSyncExternalStore, separately from this `setShown`,
   // so there is an intermediate commit where active is the deep-linked section
@@ -43,6 +48,7 @@ export function Shelf() {
   useHashSection((i) => {
     initialTarget.current = i;
     setShown(i);
+    setCurtain(i);
   });
   const [scope, animate] = useAnimate();
   const running = useRef(false);
@@ -64,6 +70,7 @@ export function Shelf() {
     initialTarget.current = null;
     if (initial !== null && active === initial) {
       setShown(active); // deep link lands directly — no wipe
+      setCurtain(active);
       return;
     }
     if (running.current) {
@@ -74,6 +81,7 @@ export function Shelf() {
     // An in-flight wipe must never be cancelled by `active` changing again —
     // rapid changes are folded via `queued` and consumed when the wipe lands.
     const runWipe = async (from: number, to: number) => {
+      setCurtain(to); // the curtain announces where we're going, not where we were
       if (prefersReduced()) {
         setShown(to);
         return;
@@ -83,16 +91,29 @@ export function Shelf() {
         const dir = to > from ? 1 : -1;
         const enterFrom = dir > 0 ? '106%' : '-106%';
         const exitTo = dir > 0 ? '-106%' : '106%';
+        // Swipe-driven changes sweep along the finger; keys, dock and deep links
+        // keep the sideways book-page sweep.
+        const axis = useAppStore.getState().wipeAxis;
+        const sweep = axis === 'y' ? 'y' : 'x';
+        const rest = axis === 'y' ? 'x' : 'y';
 
-        // cover: leaving tab sweeps in across the spread
-        await animate(scope.current, { x: [enterFrom, '0%'] }, { duration: WIPE_HALF, ease: EASE.inOut });
-        if (unmounted.current) return;
-        setShown(to); // swap under the curtain
-        // reveal: hold briefly (name readable), then slide off the far side
+        // Park the resting axis first, instantly. Folding it into the sweep
+        // below would *animate* it from wherever the last wipe left it, dragging
+        // the curtain in diagonally whenever the axis changes.
+        await animate(scope.current, { [rest]: '0%' }, { duration: 0 });
+        // cover: curtain sweeps in across the spread
         await animate(
           scope.current,
-          { x: ['0%', exitTo] },
-          { duration: WIPE_HALF, ease: EASE.inOut, delay: WIPE_HOLD },
+          { [sweep]: [enterFrom, '0%'] },
+          { duration: WIPE_HALF, ease: EASE.inOut },
+        );
+        if (unmounted.current) return;
+        setShown(to); // swap under the curtain
+        // reveal: slide off the far side
+        await animate(
+          scope.current,
+          { [sweep]: ['0%', exitTo] },
+          { duration: WIPE_HALF, ease: EASE.inOut },
         );
       } finally {
         running.current = false;
@@ -118,8 +139,8 @@ export function Shelf() {
             <Active />
           </Panel>
           <div ref={scope} className="wipe" aria-hidden style={{ transform: 'translateX(106%)' }}>
-            <span className="wipe-num">{String(shown + 1).padStart(2, '0')}</span>
-            <span className="wipe-name">{SECTIONS[shown]}</span>
+            <span className="wipe-num">{String(curtain + 1).padStart(2, '0')}</span>
+            <span className="wipe-name">{SECTIONS[curtain]}</span>
           </div>
         </main>
         <Spines />
