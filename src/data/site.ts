@@ -32,6 +32,11 @@ export interface SiteData {
   links: Links;
 }
 
+// Live resume: the auto-resume repo regenerates resume.pdf weekly; the Google
+// viewer renders that raw PDF inline instead of forcing a download.
+const RESUME_URL =
+  'https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Pranjal-SB/auto-resume/main/resume.pdf';
+
 export const siteData: SiteData = {
   profile: {
     name: 'Pranjal Swarup Bhatnagar',
@@ -71,7 +76,7 @@ export const siteData: SiteData = {
   ],
   links: {
     email: 'mailto:psbhatnagar.in@gmail.com',
-    resume: '/resume.pdf',
+    resume: RESUME_URL,
     instagram: 'https://www.instagram.com/psbhatnagarin/',
     social: [
       { label: 'GitHub', href: 'https://github.com/Pranjal-SB' },
@@ -79,7 +84,7 @@ export const siteData: SiteData = {
       { label: 'Blog', href: 'https://psb.bearblog.dev' },
       { label: 'Instagram', href: 'https://www.instagram.com/psbhatnagarin/' },
       { label: 'Chess', href: 'https://www.chess.com/member/psbhatnagar' },
-      { label: 'Resume', href: '/resume.pdf' },
+      { label: 'Resume', href: RESUME_URL },
     ],
   },
 };

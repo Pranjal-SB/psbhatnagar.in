@@ -35,7 +35,12 @@ export function Home() {
         <button className="link-btn" onClick={() => setActive(3)}>
           see my projects&nbsp;→
         </button>
-        <a className="link-underline" href={siteData.links.resume}>
+        <a
+          className="link-underline"
+          href={siteData.links.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           resume&nbsp;↗
         </a>
       </div>
