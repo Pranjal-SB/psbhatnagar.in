@@ -2,6 +2,9 @@ export interface Project {
   name: string;
   blurb: string;
   slug: string;
+  // true → the row opens /projects/<slug> (an MDX write-up); otherwise it
+  // links straight out to live, else repo
+  caseStudy?: boolean;
   links: { live?: string; repo?: string };
 }
 export interface SkillGroup {
@@ -12,7 +15,6 @@ export interface GalleryItem {
   caption: string;
   from: string;
   to: string;
-  rotate: number;
   src?: string; // real photo path under /public; designed texture placeholder when absent
 }
 export interface Links {
@@ -58,21 +60,47 @@ export const siteData: SiteData = {
       name: 'examdb',
       blurb: 'every competitive exam date, kept fresh by scrapers',
       slug: 'examdb',
+      caseStudy: true,
       links: { live: 'https://examdb.org' },
     },
     {
       name: 'outn',
       blurb: 'machine learning that names the Pokémon in a picture',
       slug: 'outn',
+      caseStudy: true,
       links: { repo: 'https://github.com/Pranjal-SB/outn' },
+    },
+    {
+      name: 'type',
+      blurb: 'a full IDE that lives in the terminal, mouse and all',
+      slug: 'type',
+      links: { repo: 'https://github.com/Pranjal-SB/type' },
+    },
+    {
+      name: 'cowbird',
+      blurb: 'disposable inboxes from ~55 backends behind one interface',
+      slug: 'cowbird',
+      links: { repo: 'https://github.com/Pranjal-SB/cowbird' },
+    },
+    {
+      name: 'x-runner revival',
+      blurb: 'a 2014 Android game, decompiled and rebuilt on Unity 6',
+      slug: 'x-runner-revival',
+      links: { repo: 'https://github.com/Pranjal-SB/X-Runner-Revival' },
+    },
+    {
+      name: 'blood & glory revival',
+      blurb: "Glu's 2012 Blood & Glory games, patched to run offline on today's Android",
+      slug: 'blood-and-glory-revival',
+      links: { repo: 'https://github.com/Pranjal-SB/Blood-and-Glory-Revival' },
     },
   ],
   gallery: [
-    { caption: 'psb · 01', from: '#8fb5d6', to: '#3f6f9e', rotate: -3 },
-    { caption: 'psb · 02', from: '#7fa87a', to: '#345c3c', rotate: 1.5 },
-    { caption: 'psb · 03', from: '#d98a8a', to: '#8f3d54', rotate: -1.5 },
-    { caption: 'psb · 04', from: '#e0b46a', to: '#a06a2c', rotate: 2.5 },
-    { caption: 'psb · 05', from: '#b79bd6', to: '#6a4d9e', rotate: -2 },
+    { caption: '10 apr 26', from: '#8fb5d6', to: '#3f6f9e', src: '/gallery/01.jpg' },
+    { caption: '03 apr 26', from: '#7fa87a', to: '#345c3c', src: '/gallery/02.jpg' },
+    { caption: '18 mar 26', from: '#d98a8a', to: '#8f3d54', src: '/gallery/03.jpg' },
+    { caption: '21 oct 25', from: '#e0b46a', to: '#a06a2c', src: '/gallery/04.jpg' },
+    { caption: '07 sep 25', from: '#b79bd6', to: '#6a4d9e', src: '/gallery/05.jpg' },
   ],
   links: {
     email: 'mailto:psbhatnagar.in@gmail.com',

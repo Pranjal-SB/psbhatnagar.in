@@ -25,10 +25,19 @@ export function stepFromSwipe(
   return 0;
 }
 
+// Browser/OS shortcuts (Ctrl/Cmd+digit tab switch, Alt+Arrow history) and typing
+// in a field must not move the shelf.
+export function ignoreKey(e: Pick<KeyboardEvent, 'ctrlKey' | 'metaKey' | 'altKey' | 'target'>): boolean {
+  if (e.ctrlKey || e.metaKey || e.altKey) return true;
+  const el = e.target as HTMLElement | null;
+  return !!el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable === true);
+}
+
 export function useShelfNav() {
   const setActive = useAppStore((s) => s.setActive);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (ignoreKey(e)) return;
       if (e.key >= '1' && e.key <= String(SECTIONS.length)) setActive(Number(e.key) - 1);
       else if (e.key === 'ArrowRight' || e.key === 'ArrowDown')
         setActive(useAppStore.getState().active + 1);
@@ -44,14 +53,35 @@ export function useShelfNav() {
       document.documentElement.style.setProperty('--drag-y', `${px}px`);
     const clearDrag = () => document.documentElement.style.removeProperty('--drag-y');
 
+    // Only the first finger drives a gesture. A second finger aborts it, and
+    // nothing re-arms until every finger lifts.
+    let trackId: number | null = null;
+    let aborted = false;
+    const findTouch = (list: TouchList) =>
+      Array.from(list).find((t) => t.identifier === trackId);
+    const reset = () => {
+      trackId = null;
+      aborted = false;
+      clearDrag();
+    };
+
     const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        aborted = true;
+        trackId = null;
+        clearDrag();
+        return;
+      }
+      if (aborted) return;
       const t = e.changedTouches[0];
+      trackId = t.identifier;
       startX = t.clientX;
       startY = t.clientY;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (!isMobile() || reduced()) return;
-      const t = e.changedTouches[0];
+      if (!isMobile() || reduced() || aborted) return;
+      const t = findTouch(e.changedTouches);
+      if (!t) return;
       const dx = t.clientX - startX;
       const dy = t.clientY - startY;
       if (Math.abs(dx) > Math.abs(dy)) return; // horizontal: browser's gesture
@@ -60,8 +90,9 @@ export function useShelfNav() {
     };
     const onTouchEnd = (e: TouchEvent) => {
       clearDrag();
-      if (!isMobile()) return;
-      const t = e.changedTouches[0];
+      const t = aborted ? undefined : findTouch(e.changedTouches);
+      if (e.touches.length === 0) reset();
+      if (!t || !isMobile()) return;
       const step = stepFromSwipe(
         { dx: t.clientX - startX, dy: t.clientY - startY },
         SWIPE_THRESHOLD,
@@ -73,13 +104,13 @@ export function useShelfNav() {
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
     window.addEventListener('touchend', onTouchEnd, { passive: true });
-    window.addEventListener('touchcancel', clearDrag, { passive: true });
+    window.addEventListener('touchcancel', reset, { passive: true });
     return () => {
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
-      window.removeEventListener('touchcancel', clearDrag);
+      window.removeEventListener('touchcancel', reset);
       clearDrag();
     };
   }, [setActive]);

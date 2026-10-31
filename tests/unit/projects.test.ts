@@ -14,6 +14,12 @@ describe('project data model', () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
+  it('every project links somewhere: its case study, or live/repo', () => {
+    for (const p of siteData.projects) {
+      expect(p.caseStudy || p.links.live || p.links.repo).toBeTruthy();
+    }
+  });
+
   it('examdb project exists with a live link', () => {
     const examdb = siteData.projects.find((p) => p.slug === 'examdb');
     expect(examdb).toBeDefined();

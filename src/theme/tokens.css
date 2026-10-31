@@ -9,6 +9,7 @@
   --dur-carry: 520ms;
   --spine-w: 58px;
   --gap-shelf: 9px;
+  --on-photo: #fff; /* text laid over photographs: same in every palette/theme */
 }
 
 :root,
@@ -29,7 +30,7 @@
   --ink: #f3f3f8;
   --muted: #9a9aa6;
   --faint: #26262f;
-  --accent: #7669ff;
+  --accent: #8276ff;
   --soft: #1d1c30;
   --shadow: rgba(0, 0, 0, 0.5);
 }
@@ -40,7 +41,7 @@
   --ink: #f1e3de;
   --muted: #b0908a;
   --faint: #342629;
-  --accent: #bd4650;
+  --accent: #ca6c74;
   --soft: #2d191c;
 }
 [data-palette='oxblood'][data-theme='light'] {
@@ -85,6 +86,6 @@
   --ink: #241a0f;
   --muted: #6b5a44;
   --faint: #e4d9c6;
-  --accent: #b5730d;
+  --accent: #8d590a;
   --soft: #f0e4cc;
 }
