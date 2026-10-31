@@ -46,3 +46,19 @@ test('rapid section changes mid-wipe settle on the last target', async ({ page }
   await page.keyboard.press('6');
   await expect(page.locator('.eyebrow')).toHaveText('06 - connect', { timeout: 8000 });
 });
+
+test('browser shortcuts and typing do not move the shelf', async ({ page }) => {
+  await seed(page);
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.keyboard.press('Control+3');
+  await page.keyboard.press('Alt+ArrowRight');
+  await page.evaluate(() => {
+    const i = document.createElement('input');
+    document.body.append(i);
+    i.focus();
+  });
+  await page.keyboard.press('3');
+  await page.waitForTimeout(600);
+  await expect(page.locator('.eyebrow')).toHaveText('01 - home');
+});

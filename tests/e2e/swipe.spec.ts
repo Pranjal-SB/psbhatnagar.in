@@ -136,3 +136,27 @@ test('swipe sweeps the curtain vertically; the dock sweeps it sideways', async (
   expect(byDock.ty).toBeLessThan(1);
   await expect(page.locator('.eyebrow')).toHaveText('05 - gallery', { timeout: 8000 });
 });
+
+test('a second finger cancels the gesture instead of swiping', async ({ page }) => {
+  await open(page);
+  await page.evaluate(() => {
+    const target = document.body;
+    const mk = (id: number, y: number) => new Touch({ identifier: id, target, clientX: 180, clientY: y });
+    const fire = (type: string, changed: Touch[], all: Touch[]) =>
+      window.dispatchEvent(
+        new TouchEvent(type, { changedTouches: changed, touches: all, bubbles: true }),
+      );
+    const a = mk(1, 340);
+    const b = mk(2, 600);
+    fire('touchstart', [a], [a]);
+    fire('touchstart', [b], [a, b]);
+    // finger 2 lifts far from where finger 1 landed; finger 1 stays down
+    fire('touchend', [mk(2, 150)], [a]);
+    fire('touchend', [mk(1, 340)], []);
+  });
+  await page.waitForTimeout(600);
+  await expect(page.locator('.eyebrow')).toHaveText('01 - home');
+  // and a clean swipe afterwards works again
+  await swipe(page, 0, -120);
+  await expect(page.locator('.eyebrow')).toHaveText('02 - about', { timeout: 8000 });
+});
