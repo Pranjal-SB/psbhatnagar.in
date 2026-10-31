@@ -67,6 +67,13 @@ describe('store', () => {
     expect((merge?.({}, useAppStore.getState()) as AppSnapshot).theme).toBe('light');
   });
 
+  it('merge drops an unknown palette/theme so the defaults stand', () => {
+    const { merge } = useAppStore.persist.getOptions();
+    const out = merge?.({ palette: 'neon', theme: 'blue' }, useAppStore.getState()) as AppSnapshot;
+    expect(out.palette).toBe('indigo');
+    expect(out.theme).toBe('light');
+  });
+
   it('toggleTheme flips light/dark', () => {
     useAppStore.getState().toggleTheme();
     expect(useAppStore.getState().theme).toBe('dark');

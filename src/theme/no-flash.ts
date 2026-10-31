@@ -5,8 +5,8 @@ export const NO_FLASH_SCRIPT = `(function(){try{
 var r=document.documentElement;
 var s=JSON.parse(localStorage.getItem('psb.state')||'{}');
 var st=(s&&s.state)||{};
-r.dataset.palette=st.palette||'indigo';
-r.dataset.theme=st.theme||'light';
+r.dataset.palette=['indigo','oxblood','pine','ochre'].indexOf(st.palette)>-1?st.palette:'indigo';
+r.dataset.theme=['light','dark'].indexOf(st.theme)>-1?st.theme:'light';
 }catch(e){
 var r=document.documentElement;r.dataset.palette='indigo';r.dataset.theme='light';
 }})();`;

@@ -4,6 +4,8 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 export const SECTIONS = ['home', 'about', 'skills', 'projects', 'gallery', 'connect'] as const;
 export type PaletteName = 'indigo' | 'oxblood' | 'pine' | 'ochre';
 export type ThemeName = 'light' | 'dark';
+const PALETTES: readonly string[] = ['indigo', 'oxblood', 'pine', 'ochre'];
+const THEMES: readonly string[] = ['light', 'dark'];
 
 const MAX = SECTIONS.length - 1;
 export function clampIndex(i: number): number {
@@ -49,11 +51,14 @@ export const useAppStore = create<AppState>()(
       // older build reads this same payload fine (clean rollback), and a stale
       // index can never win over the URL. Spreading `persisted` as-is also
       // can't clobber a default with `undefined` — absent keys stay absent.
-      merge: (persisted, current) => ({
-        ...current,
-        ...(persisted as Partial<AppState>),
-        active: current.active,
-      }),
+      // Unknown palette/theme values (hand-edited or corrupted storage) are
+      // dropped so the defaults stand, matching the no-flash script.
+      merge: (persisted, current) => {
+        const p = { ...(persisted as Partial<AppState>) };
+        if (!PALETTES.includes(p.palette as string)) delete p.palette;
+        if (!THEMES.includes(p.theme as string)) delete p.theme;
+        return { ...current, ...p, active: current.active };
+      },
     },
   ),
 );
