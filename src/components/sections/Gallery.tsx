@@ -14,7 +14,6 @@ export function Gallery() {
             key={g.caption}
             style={
               {
-                '--rot': `${g.rotate}deg`,
                 '--from': g.from,
                 '--to': g.to,
               } as React.CSSProperties

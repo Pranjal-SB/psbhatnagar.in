@@ -9,6 +9,7 @@
   --dur-carry: 520ms;
   --spine-w: 58px;
   --gap-shelf: 9px;
+  --on-photo: #fff; /* text laid over photographs: same in every palette/theme */
 }
 
 :root,

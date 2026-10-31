@@ -470,50 +470,57 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 20px 4px;
+  padding: 13px 6px;
   border-top: 1px solid var(--faint);
   text-decoration: none;
   color: inherit;
+  transition: background var(--dur-fast) var(--ease);
 }
 .proj-row:last-child { border-bottom: 1px solid var(--faint); }
 .proj-main { display: flex; align-items: baseline; gap: 16px; min-width: 0; }
-.proj-name { font-family: 'Clash Display', system-ui, sans-serif; font-weight: 600; font-size: clamp(30px, 3vw, 46px); color: var(--ink); }
-.proj-blurb { font-size: 15px; color: var(--muted); }
-.proj-cta { flex: 0 0 auto; font-size: 14px; color: var(--accent); }
+.proj-name { font-family: 'Clash Display', system-ui, sans-serif; font-weight: 600; font-size: clamp(21px, 1.9vw, 28px); color: var(--ink); white-space: nowrap; }
+.proj-blurb { font-size: 14px; color: var(--muted); }
+.proj-cta { flex: 0 0 auto; font-size: 14px; color: var(--accent); transition: transform var(--dur-fast) var(--ease); }
+@media (hover: hover) {
+  .proj-row:hover { background: var(--soft); }
+  .proj-row:hover .proj-cta { transform: translateX(3px); }
+}
 .sub-copy { font-size: 16px; color: var(--muted); margin: 0 0 30px; }
+/* Mosaic: the first photo is a tall hero spanning both rows; the other four
+   tile beside it. Straight and unframed so the photos carry the section. */
 .frames {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: clamp(18px, 2.5vw, 34px);
-  max-width: 900px;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  gap: 10px;
+  /* height-capped too: grid height follows its width, so short laptop
+     screens (1280x720) get a narrower grid instead of a scrolling panel */
+  max-width: min(880px, 88vh);
 }
-.frame {
-  margin: 0;
-  background: var(--panel);
-  border: 1px solid var(--faint);
-  padding: 10px 10px 30px;
-  box-shadow: 0 10px 26px var(--shadow);
-  transform: rotate(var(--rot));
-}
-.frame:nth-child(3n + 1) { transform: rotate(var(--rot)) translateY(10px); }
+.frame { margin: 0; position: relative; min-width: 0; }
+.frame:first-child { grid-row: span 2; }
 .frame-img {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: linear-gradient(160deg, var(--from), var(--to));
+  border-radius: 3px;
   overflow: hidden;
+  /* duotone stand-in until the photo loads (or when an item has no src) */
+  background: linear-gradient(160deg, var(--from), var(--to));
 }
-.frame-img::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.35;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
+.frame:first-child .frame-img { aspect-ratio: auto; height: 100%; }
 .frame-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.frame figcaption { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 10px; }
-.gallery-link { margin-top: 28px; color: var(--accent); border-bottom-color: var(--soft); align-self: flex-start; }
+.frame figcaption {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-photo);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.gallery-link { margin-top: 24px; color: var(--accent); border-bottom-color: var(--soft); align-self: flex-start; }
 .connect-mail {
   display: inline-block;
   align-self: flex-start;
@@ -579,20 +586,17 @@ body {
   .skill-row { padding: 11px 0; gap: 16px; }
   .skill-label { flex: 0 0 84px; padding-top: 6px; }
   .skill-set { gap: 4px 16px; }
-  .proj-name { font-size: 26px; }
-  .proj-row { padding: 14px 4px; }
-  .proj-main { flex-wrap: wrap; gap: 4px 14px; }
+  /* six rows must fit the no-scroll panel: name over a one-line blurb */
+  .proj-row { padding: 7px 4px; }
+  .proj-main { flex-direction: column; align-items: flex-start; gap: 1px; }
+  .proj-name { font-size: 18px; white-space: normal; }
+  .proj-blurb { font-size: 12.5px; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub-copy { font-size: 14px; margin-bottom: 16px; }
-  /* 2 cols, not 3: at 375px a 3-col frame is ~95px wide and forced its caption
-     down to 9px. Two columns keep the frame readable, but 5 frames then need a
-     third row the 468px panel doesn't have — so phones show a 2x2 and the
+  /* Hero + two tiles: the 468px panel has no room for more rows, so the
      "more on instagram" link carries the rest. Index-based, so it still holds
      when real photos grow the set. */
-  .frames { grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: none; }
-  .frame { padding: 6px 6px 16px; }
-  .frame:nth-child(n + 5) { display: none; }
-  .frame figcaption { font-size: 11px; margin-top: 5px; }
-  .frame:nth-child(3n + 1) { transform: rotate(var(--rot)); }
+  .frames { gap: 8px; max-width: none; grid-template-columns: 1fr 1fr; }
+  .frame:nth-child(n + 4) { display: none; }
   .gallery-link { margin-top: 18px; }
   .connect-mail { font-size: clamp(17px, 5.4vw, 30px); overflow-wrap: anywhere; margin: 6px 0 24px; }
   .connect-row { flex-wrap: wrap; gap: 16px 24px; }
@@ -704,16 +708,20 @@ body {
   .skill-row { padding: 5px 0; gap: 12px; }
   .skill-label { flex: 0 0 76px; font-size: 10px; padding-top: 3px; }
   .skill-set { gap: 2px 14px; }
-  .proj-name { font-size: 19px; }
-  .proj-blurb { font-size: 13px; }
-  .proj-row { padding: 8px 4px; }
+  /* too short for blurbs: names only, two columns of three */
+  .proj-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }
+  .proj-row:nth-last-child(2) { border-bottom: 1px solid var(--faint); }
+  .proj-blurb { display: none; }
+  .proj-name { font-size: 17px; }
+  .proj-row { padding: 5px 4px; }
   .sub-copy { font-size: 13px; margin-bottom: 8px; }
 
-  /* landscape is wide and short: one row of 5 frames instead of a 2x2 */
-  .frames { grid-template-columns: repeat(5, 1fr); gap: 10px; }
-  .frame { padding: 4px 4px 12px; }
-  .frame:nth-child(n + 5) { display: revert; }
-  .frame figcaption { font-size: 10px; margin-top: 3px; }
+  /* landscape is wide and short: one row of 5 equal tiles, no hero */
+  .frames { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .frame:first-child { grid-row: auto; }
+  .frame:first-child .frame-img { aspect-ratio: 4 / 3; height: auto; }
+  .frame:nth-child(n + 4) { display: revert; }
+  .frame figcaption { font-size: 10px; left: 5px; bottom: 3px; }
   .gallery-link { margin-top: 10px; }
   .connect-mail { font-size: clamp(16px, 3.4vw, 24px); margin: 4px 0 12px; }
   .connect-row { gap: 8px 22px; }
